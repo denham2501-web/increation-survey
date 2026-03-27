@@ -1,0 +1,2785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- viewport replaced by PWA tags below -->
+<title>SiteSurvey Pro — Increation Interiors</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ol:#545746;--ol2:#3d4133;--ol3:#6b6e58;
+  --cr:#EEE7DD;--cr2:#F9F7F4;
+  --teal:#1a7a6e;--teal-l:#e2f5f1;
+  --red:#b83232;--red-l:#fdf0ee;
+  --amb:#c07a10;--amb-l:#fef9ec;
+  --text:#2C2C2C;--t2:#545746;--t3:#888;
+  --bg:#F9F7F4;--wh:#fff;
+  --bd:#ddd8d0;--bd2:#c8c3b8;
+  --sh:0 1px 4px rgba(84,87,70,.08),0 2px 8px rgba(84,87,70,.06);
+  --shl:0 6px 28px rgba(84,87,70,.14);
+  --r:8px;--r2:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Montserrat',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* AUTH */
+#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--ol2) 0%,var(--ol) 60%,var(--ol3) 100%)}
+.auth-card{background:var(--wh);border-radius:16px;padding:48px 44px;width:100%;max-width:400px;box-shadow:var(--shl)}
+.auth-title{font-size:22px;font-weight:800;color:var(--ol);margin:16px 0 4px}
+.auth-sub{font-size:13px;color:var(--t3);margin-bottom:28px}
+
+/* APP LAYOUT */
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{background:var(--ol);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.tb-brand{display:flex;align-items:center;gap:10px}
+.tb-logo{background:rgba(255,255,255,.1);border-radius:6px;padding:6px 11px;display:flex;align-items:center;border:1px solid rgba(255,255,255,.15)}
+.tb-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
+.tb-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:8px}
+.avatar{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:white;flex-shrink:0}
+.tb-user{font-size:12px;color:rgba(255,255,255,.8);font-weight:600}
+
+.app-body{display:flex;flex:1}
+.sidebar{width:210px;background:var(--wh);border-right:1px solid var(--bd);padding:14px 0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;flex-shrink:0}
+.ng{padding:12px 14px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3)}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;border-left:3px solid transparent;transition:all .12s}
+.ni:hover{background:var(--cr2);color:var(--text);border-left-color:var(--bd2)}
+.ni.active{background:var(--cr);color:var(--ol);border-left-color:var(--ol);font-weight:700}
+.nico{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.nbadge{margin-left:auto;background:var(--ol);color:white;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700}
+.main{flex:1;padding:24px 28px;max-width:1060px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);border:none;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:all .12s;letter-spacing:.2px}
+.btn-p{background:var(--ol);color:white}.btn-p:hover{background:var(--ol2);transform:translateY(-1px)}
+.btn-cr{background:var(--cr);color:var(--ol);border:1.5px solid var(--bd2)}.btn-cr:hover{background:var(--cr2)}
+.btn-ol{background:transparent;color:var(--ol);border:1.5px solid var(--ol)}.btn-ol:hover{background:var(--cr)}
+.btn-gh{background:transparent;color:var(--t2);border:1.5px solid var(--bd)}.btn-gh:hover{background:var(--cr2);color:var(--text)}
+.btn-sm{padding:7px 13px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+.btn-red{background:var(--red-l);color:var(--red);border:1.5px solid var(--red)}
+
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sc{background:var(--wh);border-radius:var(--r2);border:1px solid var(--bd);padding:16px 18px;cursor:pointer;transition:all .12s}
+.sc:hover{box-shadow:var(--sh);transform:translateY(-2px);border-color:var(--ol)}
+.sc-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px}
+.sc-num{font-size:28px;font-weight:800;color:var(--ol);margin:4px 0 2px}
+.sc-sub{font-size:11px;color:var(--t3)}
+.sc-ico{float:right;font-size:20px;opacity:.3}
+
+/* SURVEY CARDS */
+.sl{display:flex;flex-direction:column;gap:9px}
+.sv{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r2);padding:14px 18px;display:flex;align-items:center;gap:12px;transition:all .12s}
+.sv:hover{box-shadow:var(--sh);border-color:var(--ol2)}
+.sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.dot-draft{background:var(--amb)}.dot-submitted{background:var(--teal)}.dot-completed{background:var(--ol)}
+.si{flex:1;min-width:0;cursor:pointer}
+.sn{font-weight:700;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm{font-size:11px;color:var(--t2);margin-top:2px}
+.chip{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.ch-draft{background:var(--amb-l);color:var(--amb)}
+.ch-submitted{background:var(--teal-l);color:var(--teal)}
+.ch-completed{background:var(--cr);color:var(--ol)}
+
+/* SEARCH */
+.srchbar{display:flex;gap:10px;margin-bottom:18px}
+.srchwrap{flex:1;position:relative}
+.srchwrap::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none}
+.srchinp{width:100%;padding:9px 12px 9px 32px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:inherit;font-size:13px;background:var(--wh);outline:none}
+.srchinp:focus{border-color:var(--ol)}
+select.sf{padding:9px 12px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:inherit;font-size:13px;background:white;color:var(--text);outline:none;cursor:pointer}
+select.sf:focus{border-color:var(--ol)}
+
+/* FORM SHELL */
+.fshell{background:var(--wh);border-radius:var(--r2);border:1px solid var(--bd);overflow:hidden;box-shadow:var(--sh)}
+.ftop{background:linear-gradient(135deg,var(--ol2) 0%,var(--ol) 100%);padding:18px 26px;color:white;display:flex;align-items:center;justify-content:space-between}
+.ftop-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.6;margin-bottom:4px}
+.ftop-ref{font-size:17px;font-weight:800}
+.ftop-st{font-size:12px;opacity:.55;margin-top:2px}
+
+.stepnav{background:#f0f1eb;border-bottom:1px solid var(--bd);padding:0 26px;display:flex;overflow-x:auto;scrollbar-width:none}
+.stepnav::-webkit-scrollbar{display:none}
+.stepbtn{display:flex;align-items:center;gap:5px;padding:12px 14px;font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;white-space:nowrap;font-family:inherit;transition:all .12s}
+.stepbtn:hover{color:var(--text)}
+.stepbtn.active{color:var(--ol);border-bottom-color:var(--ol);font-weight:700}
+.stepbtn.done{color:var(--teal)}
+.stepnum{width:18px;height:18px;border-radius:50%;background:currentColor;color:white;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.25;font-weight:800}
+.stepbtn.active .stepnum{opacity:1;background:var(--ol);color:white}
+.stepbtn.done .stepnum{opacity:1;background:var(--teal);color:white;font-size:9px}
+
+.fbody{padding:26px;min-height:480px}
+.sp{display:none}.sp.active{display:block}
+.st{font-size:16px;font-weight:800;color:var(--ol);margin-bottom:4px}
+.sd{font-size:12px;color:var(--t2);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.ssub{font-size:13px;font-weight:700;color:var(--text);margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
+
+/* GRIDS */
+.g1{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.span2{grid-column:span 2}
+
+/* FIELDS */
+.fg{display:flex;flex-direction:column;gap:4px}
+label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t2)}
+label .req{color:var(--red)}
+input[type=text],input[type=date],input[type=time],input[type=tel],input[type=email],input[type=number],input[type=password],select,textarea{width:100%;padding:9px 11px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:inherit;font-size:13px;color:var(--text);background:var(--cr2);outline:none;transition:border-color .12s;-webkit-appearance:none;appearance:none;-webkit-border-radius:var(--r)}
+input:focus,select:focus,textarea:focus{border-color:var(--ol);background:var(--wh)}
+textarea{resize:vertical;min-height:70px}
+select{cursor:pointer}
+.fnote{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* CHIPS */
+.cg{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.co{padding:6px 13px;border:1.5px solid var(--bd);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all .12s;background:var(--wh);color:var(--t2);user-select:none;font-family:inherit}
+.co:hover{border-color:var(--ol);color:var(--ol)}
+.co.on{background:var(--ol);border-color:var(--ol);color:white}
+.co.on2{background:var(--cr);border-color:var(--ol);color:var(--ol)}
+
+/* ROOM TABLE */
+.rtbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
+.rtbl th{background:var(--ol);color:white;padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.5px}
+.rtbl td{padding:7px 8px;border-bottom:1px solid var(--bd);background:var(--wh);vertical-align:middle}
+.rtbl tr:hover td{background:var(--cr2)}
+.rtbl input,.rtbl select{padding:5px 7px;font-size:12px;border:1.5px solid var(--bd);border-radius:5px}
+.rtbl input:focus{border-color:var(--ol);background:var(--wh);outline:none}
+.addbtn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--ol);cursor:pointer;padding:7px 12px;border-radius:var(--r);border:1.5px dashed var(--ol);background:var(--cr);transition:all .12s;font-family:inherit;margin-top:4px}
+.addbtn:hover{background:var(--ol);color:white}
+.delbtn{background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:4px}
+.delbtn:hover{color:var(--red);background:var(--red-l)}
+
+/* SNAG CARDS */
+.snagcard{background:var(--cr2);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;position:relative}
+.snagdel{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--t3);cursor:pointer;font-size:18px;width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.snagdel:hover{color:var(--red);background:var(--red-l)}
+.snagno{font-size:10px;font-weight:800;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+
+/* PHOTOS */
+.photodrop{border:2px dashed var(--bd);border-radius:var(--r2);padding:34px;text-align:center;color:var(--t2);cursor:pointer;transition:all .2s;background:var(--cr2);margin-bottom:14px}
+.photodrop:hover{border-color:var(--ol);background:var(--cr)}
+.photogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.photocard{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;background:var(--cr2);position:relative}
+.photoimg{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.photoph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--t3);flex-direction:column;gap:6px;background:linear-gradient(135deg,var(--cr2),var(--cr))}
+.photometa{padding:7px 9px;border-top:1px solid var(--bd)}
+.photozone{position:absolute;top:6px;left:6px;background:var(--ol);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.photorm{position:absolute;top:6px;right:6px;background:var(--red);color:white;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:800}
+
+/* FORM FOOTER */
+.ffooter{display:flex;justify-content:space-between;align-items:center;padding:14px 26px;border-top:1px solid var(--bd);background:var(--cr2)}
+.asave{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:6px}
+.asavedot{width:7px;height:7px;border-radius:50%;background:var(--ol);flex-shrink:0}
+
+/* PDF REPORT */
+.pdfwrap{background:var(--wh);border-radius:var(--r2);border:1px solid var(--bd);overflow:hidden;box-shadow:var(--shl);max-width:820px}
+.pdfcover{background:linear-gradient(145deg,var(--ol2) 0%,var(--ol) 60%,var(--ol3) 100%);color:white;padding:52px 52px 44px}
+.pclogo{margin-bottom:44px}
+.pclogo img{height:32px;filter:brightness(0) invert(1);display:block}
+.pctype{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(238,231,221,.15);color:var(--cr);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.pcproj{font-size:24px;font-weight:800;line-height:1.25;margin-bottom:6px}
+.pcclient{font-size:14px;opacity:.7;margin-bottom:40px}
+.pcgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;border-top:1px solid rgba(255,255,255,.15);padding-top:24px}
+.pcitem label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.5;margin-bottom:4px}
+.pcitem span{font-size:13px;font-weight:600}
+.pdfsec{padding:24px 52px;border-bottom:1px solid var(--bd)}
+.pdfsec:last-of-type{border-bottom:none}
+.pdfhdr{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--ol);margin-bottom:14px;padding-bottom:7px;border-bottom:2px solid var(--ol)}
+.pdftbl{width:100%;border-collapse:collapse;font-size:13px}
+.pdftbl td{padding:8px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
+.pdftbl td:first-child{font-weight:600;color:var(--t2);width:36%;background:var(--cr2);font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+.pdftbl tr:last-child td{border-bottom:none}
+.pdftbl2{width:100%;border-collapse:collapse;font-size:12px}
+.pdftbl2 th{background:var(--ol);color:white;padding:8px 10px;text-align:left;font-weight:700;font-size:10px;letter-spacing:.5px}
+.pdftbl2 td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+.pdftbl2 tr:nth-child(even) td{background:var(--cr2)}
+.pdfphotogrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pdfphotobox{border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.pdfphotoimg{width:100%;height:130px;object-fit:cover;display:block}
+.pdfphotoph{width:100%;height:130px;background:linear-gradient(135deg,var(--cr2),var(--cr));display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);flex-direction:column;gap:5px}
+.pdfphotocap{padding:7px 11px;font-size:12px;color:var(--t2);border-top:1px solid var(--bd)}
+.pdfphotocap strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px}
+.pdfsign{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:6px}
+.pdfsignbox{border:1px solid var(--bd);border-radius:var(--r);padding:18px}
+.pdfsignline{border-bottom:1.5px solid var(--bd2);height:48px;margin-bottom:10px}
+.pdfsignname{font-weight:700;font-size:14px;color:var(--ol)}
+.pdfsignrole{font-size:12px;color:var(--t2);margin-top:2px}
+.pdfsigndate{font-size:11px;color:var(--t3);margin-top:6px}
+.pdfbar{background:var(--cr);border-top:1px solid var(--bd);padding:16px 28px;display:flex;gap:10px;align-items:center}
+.pdfbar-lbl{font-size:13px;font-weight:700;color:var(--ol);flex:1}
+.pdffooter{font-size:11px;color:var(--t3);text-align:center;padding:14px 52px;border-top:1px solid var(--bd);background:var(--cr2)}
+.sevbadge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.sevH{background:var(--red-l);color:var(--red)}
+.sevM{background:var(--amb-l);color:var(--amb)}
+.sevL{background:var(--teal-l);color:var(--teal)}
+.sevC{background:var(--red);color:white}
+
+/* MODALS */
+.mov{position:fixed;inset:0;background:rgba(40,40,30,.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.mbox{background:var(--wh);border-radius:14px;padding:32px;max-width:460px;width:100%;box-shadow:var(--shl)}
+.mbox-wide{max-width:600px;max-height:88vh;overflow-y:auto}
+.mtitle{font-size:17px;font-weight:800;color:var(--ol);margin-bottom:6px}
+.msub{font-size:13px;color:var(--t2);margin-bottom:22px}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--ol);color:white;padding:13px 18px;border-radius:var(--r2);font-size:13px;font-weight:600;z-index:9999;transform:translateY(80px);opacity:0;transition:all .25s;box-shadow:var(--shl);max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* MISC */
+.hidden{display:none!important}
+.divider{height:1px;background:var(--bd);margin:18px 0}
+.empty{text-align:center;padding:52px 20px;color:var(--t3)}
+.infobox{background:var(--cr);border:1px solid rgba(84,87,70,.2);border-radius:var(--r);padding:11px 14px;font-size:12px;color:var(--ol2);margin-bottom:14px}
+.warnbox{background:var(--amb-l);border-left:4px solid var(--amb);border-radius:0 var(--r) var(--r) 0;padding:11px 14px;font-size:12px;color:var(--amb);margin-bottom:14px}
+
+/* PRINT */
+@media print {
+  #auth,.topbar,.sidebar,#vdash,#vform,.pdfbar,
+  .mov,.toast,button,.btn{display:none!important}
+  #app{display:block!important;height:auto!important;overflow:visible!important}
+  #vpdf{display:block!important;overflow:visible!important;height:auto!important}
+  .app-body{display:block!important;height:auto!important;overflow:visible!important}
+  .main{padding:0!important;max-width:100%!important;height:auto!important;overflow:visible!important}
+  .pdfwrap{box-shadow:none!important;border:none!important;border-radius:0!important;max-width:100%!important}
+  #pdfwrap{height:auto!important;overflow:visible!important}
+  .pdfcover{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pdftbl td:first-child,.pdftbl2 th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pdfsec{break-inside:avoid;page-break-inside:avoid}
+  body,html{background:white!important;height:auto!important;overflow:visible!important}
+  * {-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{margin:12mm 15mm;size:A4 portrait}
+}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .sg{grid-template-columns:1fr 1fr}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .main{padding:14px}
+  .pcgrid{grid-template-columns:1fr 1fr}
+  .pdfsign,.pdfphotogrid{grid-template-columns:1fr}
+}
+
+/* ── iPad / Mobile PWA ── */
+@supports (padding: env(safe-area-inset-top)) {
+  .topbar { padding-left: calc(24px + env(safe-area-inset-left)); padding-right: calc(24px + env(safe-area-inset-right)); }
+  .ffooter { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+  .toast { bottom: calc(22px + env(safe-area-inset-bottom)); right: calc(22px + env(safe-area-inset-right)); }
+}
+@media (pointer: coarse) {
+  .btn { min-height: 44px; }
+  .ni  { min-height: 44px; }
+  .co  { min-height: 40px; padding: 8px 16px; }
+  .stepbtn { padding: 14px 16px; }
+  input[type=text],input[type=date],input[type=time],input[type=tel],input[type=email],input[type=number],select,textarea { font-size: 16px !important; padding: 11px 13px; }
+  .delbtn { width: 36px; height: 36px; font-size: 18px; }
+  .snagdel { width: 36px; height: 36px; font-size: 20px; }
+  .photorm { width: 28px; height: 28px; font-size: 14px; }
+}
+@media (min-width: 768px) and (pointer: coarse) {
+  .sidebar { display: flex; flex-direction: column; }
+  .sg { grid-template-columns: repeat(4,1fr); }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 1024px) and (pointer: coarse) and (orientation: portrait) {
+  .sidebar { display: none; }
+  .main { padding: 16px; max-width: 100%; }
+  .sg { grid-template-columns: 1fr 1fr; }
+  .g3,.g4 { grid-template-columns: 1fr 1fr; }
+  .photogrid { grid-template-columns: repeat(2,1fr); }
+}
+html { overflow: hidden; height: 100%; }
+body { overflow: auto; height: 100%; -webkit-overflow-scrolling: touch; -webkit-text-size-adjust: 100%; }
+#app { height: 100%; overflow: hidden; }
+.app-body { height: calc(100% - 56px); overflow: hidden; }
+.main { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+* { -webkit-tap-highlight-color: rgba(84,87,70,0.12); }
+#install-banner { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--ol); color:white; padding:14px 20px; z-index:10000; flex-direction:row; align-items:center; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,.25); }
+#install-banner.show { display:flex; }
+#install-banner p { flex:1; font-size:13px; font-weight:600; }
+#install-banner p span { font-weight:400; opacity:.8; font-size:12px; display:block; margin-top:2px; }
+#install-banner .ibbtn { background:white; color:var(--ol); border:none; border-radius:8px; padding:8px 16px; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap; font-family:inherit; }
+#install-banner .ibdismiss { background:transparent; color:rgba(255,255,255,.6); border:none; font-size:20px; cursor:pointer; padding:4px 8px; }
+
+.auth-card input{
+  display:block;width:100%;padding:12px 14px;
+  border:1.5px solid var(--bd);border-radius:var(--r)!important;
+  -webkit-border-radius:var(--r)!important;
+  font-family:inherit;font-size:15px;color:var(--text);
+  background:var(--cr2);outline:none;
+  -webkit-appearance:none;appearance:none;
+  margin-top:6px;
+}
+.auth-card input:focus{border-color:var(--ol);background:var(--wh);}
+.auth-card .fg label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t2);}
+input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus{
+  -webkit-box-shadow:0 0 0 1000px var(--cr2) inset!important;
+  -webkit-text-fill-color:var(--text)!important;
+  border-radius:var(--r)!important;
+  border:1.5px solid var(--bd)!important;
+}
+input:focus:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px var(--wh) inset!important;
+  border-color:var(--ol)!important;
+}
+</style>
+
+<!-- PWA: Web App Manifest -->
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIlNpdGVTdXJ2ZXkgUHJvIFx1MjAxNCBJbmNyZWF0aW9uIEludGVyaW9ycyIsICJzaG9ydF9uYW1lIjogIlNpdGVTdXJ2ZXkiLCAiZGVzY3JpcHRpb24iOiAiUHJvZmVzc2lvbmFsIHNpdGUgc3VydmV5IHRvb2wgZm9yIEluY3JlYXRpb24gSW50ZXJpb3JzIGZpdC1vdXQgcHJvamVjdHMiLCAic3RhcnRfdXJsIjogIi4iLCAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwgIm9yaWVudGF0aW9uIjogImFueSIsICJiYWNrZ3JvdW5kX2NvbG9yIjogIiM1NDU3NDYiLCAidGhlbWVfY29sb3IiOiAiIzU0NTc0NiIsICJpY29ucyI6IFt7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUxRQUFBQzBDQUlBQUFDeXI1RmxBQUFCb1VsRVFWUjQydTNic1FrQUlBeEZ3VXpuQklMVFc2ZHpodlRpQUFZTzNnVGhxZytKdVliMExKeEFjQWdPd1NFNEJJZmdFQnlDUTNBSURna093U0U0QklmZ0VCeUNRM0FJRHNFaHdTRTRCSWZnRUJ5Q1EzQUlEc0VoT0NRNEJJZmdFQnlDUTNBSURzRWhPQVNINEpEZ0VCeUNRM0JjbmR3ZGd3TU9PT0NBQXc0NDRJQUREampnZ0FNT09PQ0FBdzQ0NElBRERqamdnQU1PT09DQUF3NDQ0SUFERGpqZ2dBTU9PT0NBQXc0NDRJQUREamprYjBXQ1EzQUlEc0VoT0FTSDRCQWNnc044Ymo2SEF3NDQ0SUFERGpqZ2dBTU9PT0NBQXc0NDRJQUREampnZ0FNT09PQ0FBdzQ0NElBRERqamdnQU1PT09DQUF3NDQ0SUFERGpqZ2dBTU9meXVDUTNBSURzRWhPQVNINEJBY2drTndtTS9ONTNEQUFRY2NjTUFCQnh4d3dBRUhISERBQVFjY2NNQUJCeHh3d0FFSEhIREFBUWNjY01BQkJ4eHd3QUVISEhEQUFRY2NjTUFCQnh4d3dPRnZSWEFJRHNFaE9BU0g0QkFjZ3NNVkJJZmdFQnlDUTNBSURzRWhPQVNINEpEZ0VCeUNRM0FJRHNFaE9BU0g0QkFjRWh5Q1EzQUlEc0VoT0FTSDRCQWNna053dUlMZ0VCeUNRM0FJRHYxWUFTNzBCRzY3em5UNUFBQUFBRWxGVGtTdVFtQ0MiLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3BuZyJ9LCB7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQkFBQUFBUUFDQUlBQUFEd2Y3elVBQUFWMDBsRVFWUjQydTNYTVEzQVFBd0VRYU1MZ2toQjc5cWRNVHlJNzNJakRZSXJMRys5M3dNQUFJUW9Fd0FBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQWdBQUFBQUFFQUFBQUNBQUFBRUFBQUFBQUFnQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUNBQUFBQUFBUUFBQUFnQUFBQkFBQUFBQUFJQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUFBQVFBQUFBTEFDZ0FBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBQUFCQUFBQUFnQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUlBQUFBQUFCQUFBQUFnQUFBQkFBQUFBQUFJQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQWdBQ3dBZ0FBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBRUFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUlBQUFDN3ROSkRKQVFRQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBZ0FDd0FnZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUJBQTNpQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUJBQUxpQklBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQkFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBRUFCV0FBQUFBUUFBQUFnQUFBQkFBQUFBQUFJQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFCQUFBQlJkaHJJNUFDQ0FBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUFRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUVBQVdBRUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBSUFHOFFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBSUFEY1FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUlBQUFBQUFCQUFBQUFnQUt3QUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQUlBQ0FLRHNOWkhJQVFRQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FCQUFBQUNBQkFBZ0FBQUJBQWdBQUFCQUFnQVFBQUFBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFBZ0FLd0FBZ0FRQUlBQUFBUUFJQUFBQVFBSUFFQUFBQUlBRUFDQUFBQUVBQ0FBQUFFQUNBQkFBQUFDQUJBQWdBQUFCQUFnQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUJJQTNDQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUJBQWJpQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBRUFDQUFBQUVBQ0FBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUNBQUFBRUFDQUJBQUFBQ0FCQUFnQUFBQkFBZ0FBQUJBQWdBUUFBQUFnQVFBSUFBQUFRQUlBQUFBUUFJQUVBQUFBSUFFQUNBQUFBQkFBZ0FRQUFBQWdBUUFJQUFBQVFBSUFBQUFRQUlBRUFBQUFJQUVBQ0FBQUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBRUFBQUFBQUFnQUFBQkFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFJQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBRWdCVUFBRUFBQUFBQUFnQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUNBQUFBQUFBUUFBQUFnQUFBQkFBQUFBQUFJQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUFBQVFBQUFBTEFCQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBQUFCQUFBQUFnQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUlBQUFBQUFCQUFBQUFnQUFBQkFBQUFBQUFJQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFFQUFBQUFBQWdBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUVBQUFBSUFBQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUVBQUFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQkFBQUFDQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQWdBQ3dBZ0FBQ0FBQUFFQUFBQUFBQWdBQUFCQUFBQUNBQUFBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQVFBQUFBQUFDQUFBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFCQUFBQUFBQUlBQUFBUUFBQUFnQUFBQUFBRUFBQUFJQUFBQUFBQkFBQUFBZ0FBQUJBQUFBQ0FBQUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBUUFBQUFBQUNBQUFBRUFBQUFJQUFBQUFBQVFBQUFBZ0FBQUJBQUFBQUFBSUFBQUFRQUFBQWdBQUFBQUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBRUFBQUFDQUFBQUFBQVFBQUFBZ0FBQUFBQUVBQUFBSUFBQUFRQUFBQUFBQ0FBQUFFQUFBQUlBQUFBQUFCQUFBQUNBQUFBQUFBUUFBQUFJQUFBRDRvd05BRVRpM2NsbHg2UUFBQUFCSlJVNUVya0pnZ2c9PSIsICJzaXplcyI6ICIxMDI0eDEwMjQiLCAidHlwZSI6ICJpbWFnZS9wbmcifV19">
+
+<!-- iOS PWA meta tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SiteSurvey">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#545746">
+<meta name="format-detection" content="telephone=no">
+
+<!-- iOS touch icons (different sizes for different iPads) -->
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAABoUlEQVR42u3bsQkAIAxFwUznBILTW6dzhvTiAAYO3gThqg+JuYb0LJxAcAgOwSE4BIfgEByCQ3AIDgkOwSE4BIfgEByCQ3AIDsEhwSE4BIfgEByCQ3AIDsEhOCQ4BIfgEByCQ3AIDsEhOASH4JDgEByCQ3BcndwdgwMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjkb0WCQ3AIDsEhOASH4BAcgsN8bj6HAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOfyuCQ3AIDsEhOASH4BAcgkNwmM/N53DAAQcccMABBxxwwAEHHHDAAQcccMABBxxwwAEHHHDAAQcccMABBxxwwAEHHHDAAQcccMABBxxwwOFvRXAIDsEhOASH4BAcgsMVBIfgEByCQ3AIDsEhOASH4JDgEByCQ3AIDsEhOASH4BAcEhyCQ3AIDsEhOASH4BAcgkNwuILgEByCQ3AIDv1YAS70BG67znT5AAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" sizes="152x152" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJgAAACYCAIAAACXoLd2AAABK0lEQVR42u3aMQ0AIAxFwapDAQnqmbuhoRJYobnkKehtzY+5hhoUTgBSIAVSIEEKpEAKJEiBFEiBFEiQAimQAglSIAVSIEEKpEAKpECCFEiBFEiQAimQAgnSFUAK5L2T+81AggQJEiRIkCBBggQJEiRIkCBBggQJEiRIkCBBggQJEiRIkCBBgjS+EkiQAimQAglSIAVSPjs+OyBBggQJEiRIkCBBggQJEiRIkCBBggQJEiRIkCBBggQJEiRIkLLZEUiBBCmQAimQAgnSZwckSJAgQYIECRIkSJAgQYIECRIkSJAgQYIECRIkSJAgQYIECRIkSOMr4yuBFEiBFEiQAimQAglSIAVSIAUSpEAKpECCFEiBFEiQAimQAimQIAVSIAUSpEAKpECC1OcVElCZ6SWxRGoAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" sizes="167x167" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKcAAACnCAIAAAD7dNu7AAABU0lEQVR42u3asQkAMAhFQadzgkCmT22XGZwiEPDgTeB1H2Pt1LTCCaiLuqiLuqiLuqiLuqiLuqiLuqiLuqiLuqiLOnVRF3VRF3VRF3VRF3VRF3VRF3VRF3VRF3VRp+4K1EVd1EVd1F936/wfderUqVOnTp06derUqVOnTp06derUqVOnTp06derUqVOnTp06derUqVOnTp26qIu6qIu6qIu6qIu6bHO2OerUqVOnTp06derUqVOnTp06derUqVOnTp06derUqVOnTp06derUqVOnTp26/MiKuqiLuqiLuqiLuqjb5qhTp06dOnXq1KlTp06dOnXq1KlTp06dOnXq1KlTp06dOnXq1KlTp06dOnXqfmRFXdRFXdRFnbqoi7qoi7qoi7qoi7qoi7qoi7qoi7qoi7qoizp1URd1URd1URd1URd1URd1URd1URd1URd1UZ9cA1nFU43uHfZQAAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" sizes="120x120" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAIAAAC2BqGFAAAA20lEQVR42u3YMQ0AIAxE0apDAQnqmbuhoSsKYOhLvoI3XS7mGnpQIAANWqBBg6YAGrRAgwZNATRogQYNWqBBCzRo0AINWqBBgxZo0AIN+urk/hVo0KBBgwYNGjRo0KBBgwYNGjRo0KBBg3b8O/4FGrRAgwYtO9qOBg0aNGjQoEGDBg0aNGjQoEGDBg0atD/aHy3QoEELNGjZ0aBBgwYNGjRo0KBBgwYNGjRo0KBBgwYN2vHv+Bdo0AINGrRAgxZo0KAFGjRoBKBBCzRo0BRAgxZo0KApgAYt0KB7VzRsK+Zu6BQ/AAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" sizes="76x76"   href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAIAAABI9cZ8AAAAc0lEQVR42u3WsQkAIAxE0UznBILTW6dzhmwgCFbhwS3wmuPHXKP9AhISEhISEhISEhISEhISEhLyYSf3r0FCQkJCQkJCyjpISEjHAwkJCQkJCal4ICEFOiQkJCQkJCSkrIOEhISEhISEhISEhISEhIS8rQDsrjasElOW8QAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon"                  href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAABoUlEQVR42u3bsQkAIAxFwUznBILTW6dzhvTiAAYO3gThqg+JuYb0LJxAcAgOwSE4BIfgEByCQ3AIDgkOwSE4BIfgEByCQ3AIDsEhwSE4BIfgEByCQ3AIDsEhOCQ4BIfgEByCQ3AIDsEhOASH4JDgEByCQ3BcndwdgwMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjkb0WCQ3AIDsEhOASH4BAcgsN8bj6HAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOOOCAAw444IADDjjggAMOfyuCQ3AIDsEhOASH4BAcgkNwmM/N53DAAQcccMABBxxwwAEHHHDAAQcccMABBxxwwAEHHHDAAQcccMABBxxwwAEHHHDAAQcccMABBxxwwOFvRXAIDsEhOASH4BAcgsMVBIfgEByCQ3AIDsEhOASH4JDgEByCQ3AIDsEhOASH4BAcEhyCQ3AIDsEhOASH4BAcgkNwuILgEByCQ3AIDv1YAS70BG67znT5AAAAAElFTkSuQmCC">
+
+<!-- iPad viewport — prevent zoom, full screen feel -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+</head>
+<body>
+
+<!-- AUTH -->
+
+<!-- iOS Install Banner -->
+<div id="install-banner">
+  <div style="font-size:28px">📱</div>
+  <p>Add to Home Screen
+    <span>Tap Share → "Add to Home Screen" for full-screen app</span>
+  </p>
+  <button class="ibbtn" onclick="dismissBanner()">Got it</button>
+  <button class="ibdismiss" onclick="dismissBanner()">✕</button>
+</div>
+
+<div id="auth">
+  <div class="auth-card">
+    <div style="margin-bottom:16px"><span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;letter-spacing:2px;color:rgba(255,255,255,.9);text-transform:uppercase">INCREATION INTERIORS</span></div>
+    <h1 class="auth-title">SiteSurvey Pro</h1>
+    <p class="auth-sub">Sign in to access your site surveys</p>
+    <div class="fg" style="margin-bottom:14px">
+      <label>Email address</label>
+      <input type="email" id="lemail" value="den@increation.ae" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="fg" style="margin-bottom:22px">
+      <label>Password</label>
+      <input type="password" id="lpass" value="increation" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-p btn-full" onclick="doLogin()">Sign In →</button>
+    <p style="margin-top:14px;font-size:11px;color:var(--t3);text-align:center">Demo: den@increation.ae / increation</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header class="topbar">
+    <div class="tb-brand">
+      <div class="tb-logo">
+        <span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:11px;letter-spacing:1px;color:var(--cr);text-transform:uppercase;line-height:1">INCREATION</span>
+      </div>
+      <div>
+        <div class="tb-name">SiteSurvey Pro</div>
+        <div class="tb-sub">Increation Interiors</div>
+      </div>
+    </div>
+    <div class="tb-right">
+      <div class="avatar" id="uavatar">DS</div>
+      <span class="tb-user" id="uname">Den S.</span>
+      <button class="btn btn-sm btn-gh" style="color:rgba(255,255,255,.65);border-color:rgba(255,255,255,.25)" onclick="doLogout()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <nav class="sidebar">
+      <div class="ng">Overview</div>
+      <div class="ni active" id="navdash" onclick="showView('dash')"><span class="nico">📋</span>Dashboard</div>
+      <div class="ng">Surveys</div>
+      <div class="ni" onclick="startNew()"><span class="nico">➕</span>New Survey</div>
+      <div class="ni" onclick="showView('dash');filterStatus('draft')"><span class="nico">📝</span>Drafts<span class="nbadge" id="nbdraft">0</span></div>
+      <div class="ni" onclick="showView('dash');filterStatus('submitted')"><span class="nico">📬</span>Submitted<span class="nbadge" id="nbsub">0</span></div>
+      <div class="ng">Reports</div>
+      <div class="ni" onclick="showView('dash');filterStatus('completed')"><span class="nico">📄</span>Completed Reports</div>
+      <div class="ng">Help</div>
+      <div class="ni" onclick="showSetup()"><span class="nico">🚀</span>Deploy Guide</div>
+    </nav>
+
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <div id="vdash">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+          <div><h1 style="font-size:20px;font-weight:800;color:var(--ol)">Dashboard</h1><p style="font-size:13px;color:var(--t2);margin-top:3px">All site surveys — Increation Interiors</p></div>
+          <button class="btn btn-cr" onclick="startNew()">+ New Survey</button>
+        </div>
+        <div class="sg">
+          <div class="sc" onclick="filterStatus('all')"><span class="sc-ico">📁</span><div class="sc-lbl">Total</div><div class="sc-num" id="stotal">0</div><div class="sc-sub">all surveys</div></div>
+          <div class="sc" onclick="filterStatus('draft')"><span class="sc-ico">✏️</span><div class="sc-lbl">Drafts</div><div class="sc-num" id="sdraft">0</div><div class="sc-sub">in progress</div></div>
+          <div class="sc" onclick="filterStatus('submitted')"><span class="sc-ico">📬</span><div class="sc-lbl">Submitted</div><div class="sc-num" id="ssub">0</div><div class="sc-sub">awaiting report</div></div>
+          <div class="sc" onclick="filterStatus('completed')"><span class="sc-ico">✅</span><div class="sc-lbl">Completed</div><div class="sc-num" id="sdone">0</div><div class="sc-sub">reports ready</div></div>
+        </div>
+        <div class="srchbar">
+          <div class="srchwrap"><input type="text" class="srchinp" id="srch" placeholder="Search project, client, location, surveyor..." oninput="filterSurveys()"></div>
+          <select class="sf" id="srchst" onchange="filterSurveys()">
+            <option value="">All statuses</option>
+            <option value="draft">Draft</option>
+            <option value="submitted">Submitted</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="sl" id="slist"></div>
+      </div>
+
+      <!-- FORM VIEW -->
+      <div id="vform" class="hidden">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <button class="btn btn-gh btn-sm" onclick="showView('dash')">← Back</button>
+          <div>
+            <div style="font-size:18px;font-weight:800;color:var(--ol)" id="ftitle">New Site Survey</div>
+            <div style="font-size:12px;color:var(--t2);margin-top:2px" id="fidlbl">Survey ID: —</div>
+          </div>
+        </div>
+        <div class="fshell">
+          <div class="ftop">
+            <div>
+              <div class="ftop-lbl">Increation Interiors — Site Survey</div>
+              <div class="ftop-ref" id="fref">—</div>
+              <div class="ftop-st" id="fstlbl">Status: Draft</div>
+            </div>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.25)" onclick="saveDraft()">Save Draft</button>
+          </div>
+          <div class="stepnav" id="stepnav"></div>
+          <div class="fbody" id="fbody">
+
+            <!-- ══ STEP 1: PROJECT DETAILS ══ -->
+            <div class="sp active" id="step-1">
+              <h2 class="st">Project Details</h2>
+              <p class="sd">Core project identification, client information, and survey meta-data.</p>
+
+              <div class="ssub">Project Identification</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Project Name <span class="req">*</span></label>
+                  <input type="text" id="fprojname" placeholder="e.g. White & Case – 16F Office Fit-Out" oninput="onFC()">
+                </div>
+                <div class="fg">
+                  <label>Client Name <span class="req">*</span></label>
+                  <input type="text" id="fclient" placeholder="e.g. White & Case LLP">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Project Reference No.</label>
+                  <input type="text" id="fprojref" placeholder="e.g. INC-2026-041">
+                  <div class="field-note">Leave blank to auto-generate</div>
+                </div>
+                <div class="fg">
+                  <label>Survey Type <span class="req">*</span></label>
+                  <select id="fstype">
+                    <option value="">Select survey type</option>
+                    <option>Pre-tender Site Visit</option>
+                    <option>Pre-construction Survey</option>
+                    <option>Design Intent Survey</option>
+                    <option>Existing Conditions Survey</option>
+                    <option>Defects / Snagging Survey</option>
+                    <option>Handover Inspection</option>
+                    <option>As-built Verification Survey</option>
+                    <option>Post-occupancy Survey</option>
+                    <option>Dilapidations Survey</option>
+                    <option>Feasibility Survey</option>
+                    <option>General Site Survey</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ssub">Site Location</div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Full Site Address / Location <span class="req">*</span></label>
+                  <input type="text" id="flocation" placeholder="e.g. Al Sila Tower, 16th Floor, ADGM Square, Al Maryah Island, Abu Dhabi">
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Floor / Level</label>
+                  <input type="text" id="ffloor" placeholder="e.g. Floor 16, Floors 3–5">
+                </div>
+                <div class="fg">
+                  <label>Unit / Suite No.</label>
+                  <input type="text" id="funit" placeholder="e.g. Unit 1602">
+                </div>
+                <div class="fg">
+                  <label>Emirate</label>
+                  <select id="femira">
+                    <option value="">Select</option>
+                    <option>Abu Dhabi</option>
+                    <option>Dubai</option>
+                    <option>Sharjah</option>
+                    <option>Ajman</option>
+                    <option>Ras Al Khaimah</option>
+                    <option>Fujairah</option>
+                    <option>Umm Al Quwain</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ssub">Client & Site Contacts</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Primary Contact Person</label>
+                  <input type="text" id="fcontact" placeholder="Full name">
+                </div>
+                <div class="fg">
+                  <label>Contact Title / Role</label>
+                  <input type="text" id="fcrole" placeholder="e.g. Facilities Manager">
+                </div>
+                <div class="fg">
+                  <label>Contact Number</label>
+                  <input type="tel" id="fcnum" placeholder="+971 50 000 0000">
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Contact Email</label>
+                  <input type="email" id="fcemail" placeholder="email@company.com">
+                </div>
+                <div class="fg">
+                  <label>Secondary Contact / Consultant</label>
+                  <input type="text" id="fcontact2" placeholder="Name & company">
+                </div>
+                <div class="fg">
+                  <label>Secondary Contact Number</label>
+                  <input type="tel" id="fc2num" placeholder="+971 50 000 0000">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Building Management Company</label>
+                  <input type="text" id="fbmname" placeholder="e.g. Savills UAE, CBRE, Jones Lang LaSalle">
+                </div>
+                <div class="fg">
+                  <label>BM Contact / Number</label>
+                  <input type="text" id="fbmcontact" placeholder="Name & phone">
+                </div>
+              </div>
+
+              <div class="ssub">Survey Administration</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Survey Date <span class="req">*</span></label>
+                  <input type="date" id="fdate">
+                </div>
+                <div class="fg">
+                  <label>Survey Start Time</label>
+                  <input type="time" id="ftstart" value="09:00">
+                </div>
+                <div class="fg">
+                  <label>Survey End Time</label>
+                  <input type="time" id="ftend" value="12:00">
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Lead Surveyor <span class="req">*</span></label>
+                  <input type="text" id="fsurveyor" placeholder="Full name">
+                </div>
+                <div class="fg">
+                  <label>Surveyor Role</label>
+                  <select id="fsrole">
+                    <option>Operations Director</option>
+                    <option>Project Manager</option>
+                    <option>Site Engineer</option>
+                    <option>Quantity Surveyor</option>
+                    <option>Design Manager</option>
+                    <option>MEP Engineer</option>
+                    <option>Site Supervisor</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Additional Surveyor(s)</label>
+                  <input type="text" id="fsurv2" placeholder="Name(s) if more than one">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Accompanying Client Rep on Site</label>
+                  <input type="text" id="fcrep" placeholder="Name & role of person who accompanied survey">
+                </div>
+                <div class="fg">
+                  <label>Drawings / Documents Available on Site</label>
+                  <select id="fdravail">
+                    <option>None available</option>
+                    <option>Floor plans only</option>
+                    <option>Full architectural drawings</option>
+                    <option>As-built drawings available</option>
+                    <option>MEP drawings available</option>
+                    <option>Full drawing set available</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 2: BUILDING & SITE CONDITIONS ══ -->
+            <div class="sp" id="step-2">
+              <h2 class="st">Building & Site Conditions</h2>
+              <p class="sd">Existing state of the site, building infrastructure, access restrictions, and safety observations.</p>
+
+              <div class="ssub">General Site Status</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Existing Site Condition <span class="req">*</span></label>
+                  <select id="fsitecond">
+                    <option value="">Select condition</option>
+                    <option>Shell & Core — bare concrete</option>
+                    <option>Cat A — base fit-out (grid, lighting, raised floor)</option>
+                    <option>Cat B — full fit-out, occupied</option>
+                    <option>Cat B — full fit-out, vacant</option>
+                    <option>Partially fit-out — strip required</option>
+                    <option>Post-strip — ready for new works</option>
+                    <option>New build handover</option>
+                    <option>Operational — live environment, phased works</option>
+                    <option>Dilapidated — significant remediation needed</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Overall Site Cleanliness</label>
+                  <select id="fclean">
+                    <option value="">Select</option>
+                    <option>Clean — ready for survey</option>
+                    <option>Moderate — some debris</option>
+                    <option>Poor — significant debris / obstruction</option>
+                    <option>Hazardous — safety concerns</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Occupancy Status</label>
+                  <select id="focc">
+                    <option>Vacant — unoccupied</option>
+                    <option>Partially occupied</option>
+                    <option>Fully occupied — tenant in place</option>
+                    <option>Handover — previous tenant vacated</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Neighbouring Spaces / Floors</label>
+                  <select id="fneigh">
+                    <option value="">Select</option>
+                    <option>All vacant / shell</option>
+                    <option>Adjacent floors occupied</option>
+                    <option>Same floor — partial occupancy</option>
+                    <option>Full building occupied</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>General Site Observations</label>
+                  <textarea id="fgenobs" rows="3" placeholder="Overall impression — condition, any immediate observations, atmosphere of the space..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Access & Logistics</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Site Access Conditions <span class="req">*</span></label>
+                  <select id="faccess">
+                    <option value="">Select</option>
+                    <option>Open / Free access</option>
+                    <option>Access card / key required</option>
+                    <option>Security clearance required</option>
+                    <option>Escorted access only</option>
+                    <option>Pre-registration with BM required</option>
+                    <option>Restricted — limited personnel</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Working Hours Permitted</label>
+                  <input type="text" id="fwhours" placeholder="e.g. 7am–7pm Sun–Thu, Fri/Sat off-hours only">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Goods Lift / Service Access</label>
+                  <select id="fslift">
+                    <option value="">Select</option>
+                    <option>Dedicated service lift available</option>
+                    <option>Passenger lift only — size restrictions apply</option>
+                    <option>External hoist / crane access only</option>
+                    <option>Staircase only — no lift</option>
+                    <option>No goods lift — shared passenger lift with restrictions</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Goods Lift Dimensions (if known)</label>
+                  <input type="text" id="fldims" placeholder="e.g. 1,400mm W × 2,100mm H × 1,800mm D, 1,000kg">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Loading / Unloading Area</label>
+                  <select id="floading">
+                    <option value="">Select</option>
+                    <option>Dedicated loading dock — unrestricted</option>
+                    <option>Shared loading bay — advance booking required</option>
+                    <option>Street loading — council permit needed</option>
+                    <option>Basement parking only</option>
+                    <option>No dedicated area — site-specific plan needed</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Parking for Contractors</label>
+                  <select id="fparking">
+                    <option value="">Select</option>
+                    <option>On-site contractor parking available</option>
+                    <option>Limited — advance registration required</option>
+                    <option>None — street or public parking only</option>
+                    <option>Paid parking nearby</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Material Delivery Route / Restrictions</label>
+                  <textarea id="fdelivery" rows="2" placeholder="Note any size restrictions, route limitations, time windows for deliveries..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Building Management Requirements</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>BM Approval Required for Works?</label>
+                  <div class="chip-group" id="cgbmapp">
+                    <span class="chip-opt on-gold" onclick="chipSingle(this,'cg-bm-approval')">Yes — full approval</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-bm-approval')">Yes — notification only</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-bm-approval')">No</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-bm-approval')">TBC</span>
+                  </div>
+                </div>
+                <div class="fg">
+                  <label>CAFM / Contractor Management System</label>
+                  <input type="text" id="fcafm" placeholder="e.g. Maximo, IBM TRIRIGA, Yardi, none">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Contractor Insurance Requirements</label>
+                  <textarea id="finsreq" rows="2" placeholder="Min. insurance values, types required by BM..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Specific BM / HOA Requirements</label>
+                  <textarea id="fbmreqs" rows="2" placeholder="Any other BM-specific requirements — PPE, induction, approved contractors list..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Safety & Hazard Assessment</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Safety Hazards Observed</label>
+                  <div class="chip-group" id="cgsafety">
+                    <span class="chip-opt on-teal" onclick="chipSingle(this,'cg-safety')">None observed</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Slip / trip hazards</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Exposed wiring</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Asbestos risk</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Lead paint risk</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Structural concern</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Confined spaces</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Falling objects risk</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Chemical storage</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-safety')">Critical — stop work</span>
+                  </div>
+                </div>
+                <div class="fg">
+                  <label>PPE Required on Site</label>
+                  <div class="chip-group" id="cgppe">
+                    <span class="chip-opt on" onclick="chipSingle(this,'cg-ppe')">Hard hat</span>
+                    <span class="chip-opt on" onclick="chipSingle(this,'cg-ppe')">Safety shoes</span>
+                    <span class="chip-opt on" onclick="chipSingle(this,'cg-ppe')">Hi-vis vest</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-ppe')">Safety glasses</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-ppe')">Gloves</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-ppe')">Respirator / mask</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-ppe')">Full body harness</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-ppe')">None required</span>
+                  </div>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Safety Observations & Notes</label>
+                  <textarea id="fsafety" rows="3" placeholder="Describe any safety concerns in detail — location, severity, immediate actions required..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Permit Requirements</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Permits Required</label>
+                  <div class="chip-group" id="cgpermit">
+                    <span class="chip-opt on-teal" onclick="chipSingle(this,'cg-permits')">None identified</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">BM NOC</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Municipality permit</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Civil Defense approval</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">ADDC / DEWA approval</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Etisalat / Du approval</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Authority to Connect</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Hot work permit</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Road closure permit</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-permits')">Multiple — TBC</span>
+                  </div>
+                </div>
+                <div class="fg">
+                  <label>Permit Notes</label>
+                  <textarea id="fpermitnotes" rows="4" placeholder="Details on permits, authority contacts, estimated lead times..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 3: EXISTING FINISHES ══ -->
+            <div class="sp" id="step-3">
+              <h2 class="st">Existing Finishes & Fabric</h2>
+              <p class="sd">Detailed record of existing floors, walls, ceilings, joinery, glazing, and building fabric conditions.</p>
+
+              <div class="ssub">Ceiling</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Ceiling Type</label>
+                  <select id="fceiltype">
+                    <option value="">Select</option>
+                    <option>Exposed concrete slab</option>
+                    <option>Suspended grid ceiling (T-bar)</option>
+                    <option>GWB / Drywall ceiling</option>
+                    <option>Plasterboard ceiling</option>
+                    <option>Acoustic tile ceiling</option>
+                    <option>Metal panel ceiling</option>
+                    <option>Timber / wood ceiling</option>
+                    <option>Open / no ceiling</option>
+                    <option>Mixed — various zones</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Ceiling Condition</label>
+                  <select id="fceilcond">
+                    <option value="">Select</option>
+                    <option>New / excellent</option>
+                    <option>Good — minor wear</option>
+                    <option>Fair — some repairs needed</option>
+                    <option>Poor — significant damage</option>
+                    <option>To strip entirely</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Strip / Retain</label>
+                  <select id="fceilstrip">
+                    <option value="">Select</option>
+                    <option>Strip entirely — new ceiling</option>
+                    <option>Retain and make good</option>
+                    <option>Partial strip — some areas only</option>
+                    <option>Retain — decorate only</option>
+                    <option>N/A — bare slab</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Ceiling Notes</label>
+                  <textarea id="fceilnotes" rows="2" placeholder="Existing tile brand, tile size, grid type, any specific notes, areas of concern..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Flooring</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Floor Finish Type</label>
+                  <select id="ffloortype">
+                    <option value="">Select</option>
+                    <option>Raised access floor (RAF)</option>
+                    <option>Carpet tiles</option>
+                    <option>Broadloom carpet</option>
+                    <option>Ceramic / porcelain tiles</option>
+                    <option>Natural stone (marble / granite)</option>
+                    <option>Polished concrete</option>
+                    <option>Vinyl / LVT</option>
+                    <option>Timber / parquet</option>
+                    <option>Epoxy / resin</option>
+                    <option>Bare screed</option>
+                    <option>Mixed — various zones</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Floor Condition</label>
+                  <select id="ffloorcond">
+                    <option value="">Select</option>
+                    <option>New / excellent</option>
+                    <option>Good — minor wear</option>
+                    <option>Fair — some repairs needed</option>
+                    <option>Poor — replace recommended</option>
+                    <option>To strip entirely</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Strip / Retain</label>
+                  <select id="ffloorstrip">
+                    <option value="">Select</option>
+                    <option>Strip entirely — new finish</option>
+                    <option>Retain and clean</option>
+                    <option>Partial strip — damaged areas</option>
+                    <option>Overlay — new finish on top</option>
+                    <option>N/A — bare screed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Floor Notes</label>
+                  <textarea id="ffloornotes" rows="2" placeholder="Existing carpet type/manufacturer, tile size, RAF void height, screed condition, levelness issues..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Walls & Partitions</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Wall Type</label>
+                  <select id="fwalltype">
+                    <option value="">Select</option>
+                    <option>Concrete / masonry — permanent</option>
+                    <option>Drywall / GWB partitions</option>
+                    <option>Glazed partitions (full height)</option>
+                    <option>Glazed partitions (partial)</option>
+                    <option>Demountable system partitions</option>
+                    <option>Mix — masonry + partitions</option>
+                    <option>Open plan — no internal walls</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Wall Finish</label>
+                  <select id="fwallfinish">
+                    <option value="">Select</option>
+                    <option>Painted — emulsion</option>
+                    <option>Painted — enamel / gloss</option>
+                    <option>Wallpaper / vinyl fabric</option>
+                    <option>Wall tiles</option>
+                    <option>Wall cladding / panels</option>
+                    <option>Exposed concrete</option>
+                    <option>Bare plasterboard</option>
+                    <option>Mixed</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Wall Condition</label>
+                  <select id="fwallcond">
+                    <option value="">Select</option>
+                    <option>Good — no work needed</option>
+                    <option>Fair — make good and repaint</option>
+                    <option>Poor — replaster or replace</option>
+                    <option>Strip and rebuild</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Wall & Partition Notes</label>
+                  <textarea id="fwallnotes" rows="2" placeholder="Partition system brand, glazing type, condition details, any structural walls noted..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Doors & Ironmongery</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Door Type / Material</label>
+                  <select id="fdoortype">
+                    <option value="">Select</option>
+                    <option>Solid core timber</option>
+                    <option>Hollow core timber</option>
+                    <option>Glazed — full height</option>
+                    <option>Glazed — vision panel</option>
+                    <option>Metal / steel</option>
+                    <option>Fire rated (FD30/FD60)</option>
+                    <option>Automatic / sliding</option>
+                    <option>None — open plan</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Door Condition</label>
+                  <select id="fdoorcond">
+                    <option value="">Select</option>
+                    <option>Good — retain</option>
+                    <option>Fair — overhaul ironmongery</option>
+                    <option>Poor — replace</option>
+                    <option>N/A</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Fire Door Compliance</label>
+                  <select id="ffiredoor">
+                    <option value="">Select</option>
+                    <option>Compliant — intumescent strips present</option>
+                    <option>Non-compliant — upgrade required</option>
+                    <option>Not assessed</option>
+                    <option>N/A</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Doors & Ironmongery Notes</label>
+                  <textarea id="fdoornotes" rows="2" placeholder="Qty of doors, door sizes, access control type, closer condition, any issues..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Glazing & Window Treatment</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>External Glazing Type</label>
+                  <select id="fglaztype">
+                    <option value="">Select</option>
+                    <option>Double glazed — standard</option>
+                    <option>Double glazed — solar control</option>
+                    <option>Triple glazed</option>
+                    <option>Single glazed — older building</option>
+                    <option>Curtain wall system</option>
+                    <option>No external glazing</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Solar Film / Window Treatment</label>
+                  <select id="fsolarfilm">
+                    <option value="">Select</option>
+                    <option>Existing solar film — good condition</option>
+                    <option>Existing solar film — to strip and replace</option>
+                    <option>Blinds / roller shades present</option>
+                    <option>No treatment — assessment needed</option>
+                    <option>Blackout treatment required</option>
+                    <option>N/A — no external glazing</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ssub">Joinery & Built-in Elements</div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Existing Joinery / Built-in Elements</label>
+                  <textarea id="fjoinery" rows="3" placeholder="Reception desk, pantry / kitchen, wardrobes, display units, boardroom credenzas — material, condition, strip or retain decision..."></textarea>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Raised Floor / Skirting / Transition Details</label>
+                  <textarea id="fskirtings" rows="2" placeholder="Skirting type, height, condition; transitions between floor finishes, step details..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 4: MEASUREMENTS & DIMENSIONS ══ -->
+            <div class="sp" id="step-4">
+              <h2 class="st">Measurements & Dimensions</h2>
+              <p class="sd">Floor areas, ceiling heights, structural grid, and room-by-room dimensions.</p>
+
+              <div class="ssub">Overall Dimensions</div>
+              <div class="g4">
+                <div class="fg">
+                  <label>Total GFA (sqm)</label>
+                  <input type="number" id="fgfa" placeholder="0.00" step="0.01">
+                  <div class="field-note">Gross floor area</div>
+                </div>
+                <div class="fg">
+                  <label>Total NFA (sqm)</label>
+                  <input type="number" id="fnfa" placeholder="0.00" step="0.01">
+                  <div class="field-note">Net floor area</div>
+                </div>
+                <div class="fg">
+                  <label>Lettable Area (sqm)</label>
+                  <input type="number" id="flettable" placeholder="0.00" step="0.01">
+                </div>
+                <div class="fg">
+                  <label>No. of Floors Surveyed</label>
+                  <input type="number" id="ffloorscount" placeholder="1" min="1">
+                </div>
+              </div>
+              <div class="g4">
+                <div class="fg">
+                  <label>Floor-to-Slab Height</label>
+                  <input type="text" id="fslabht" placeholder="e.g. 3,250mm">
+                  <div class="field-note">Structural slab to slab</div>
+                </div>
+                <div class="fg">
+                  <label>Floor-to-Ceiling Height</label>
+                  <input type="text" id="fceilht" placeholder="e.g. 2,750mm">
+                  <div class="field-note">Finished floor to finished ceiling</div>
+                </div>
+                <div class="fg">
+                  <label>Ceiling Void Depth</label>
+                  <input type="text" id="fvoidht" placeholder="e.g. 500mm">
+                  <div class="field-note">Space above ceiling</div>
+                </div>
+                <div class="fg">
+                  <label>Raised Floor Void (RAF)</label>
+                  <input type="text" id="frafvoid" placeholder="e.g. 150mm, N/A">
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Structural Grid (X)</label>
+                  <input type="text" id="fgridx" placeholder="e.g. 8,100mm centres">
+                </div>
+                <div class="fg">
+                  <label>Structural Grid (Y)</label>
+                  <input type="text" id="fgridy" placeholder="e.g. 8,100mm centres">
+                </div>
+                <div class="fg">
+                  <label>Perimeter Beam Depth</label>
+                  <input type="text" id="fbeam" placeholder="e.g. 800mm from slab">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Column Sizes (if applicable)</label>
+                  <input type="text" id="fcols" placeholder="e.g. 600×600mm concrete, 4 nr. on floor">
+                </div>
+                <div class="fg">
+                  <label>Structural Slab Type</label>
+                  <select id="fslabtype">
+                    <option value="">Select</option>
+                    <option>Flat plate concrete slab</option>
+                    <option>Post-tensioned concrete</option>
+                    <option>Composite metal deck</option>
+                    <option>Pre-cast concrete</option>
+                    <option>Steel frame with deck</option>
+                    <option>Unknown</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ssub">Room-by-Room Dimensions</div>
+              <div class="infobox">📐 Add each room or zone with its key dimensions. This populates the measurements table in your PDF report.</div>
+              <table class="rtbl" id="roomtbl">
+                <thead><tr>
+                  <th>#</th><th>Room / Zone</th><th>Length (mm)</th><th>Width (mm)</th><th>Area (sqm)</th><th>Height (mm)</th><th>Notes</th><th></th>
+                </tr></thead>
+                <tbody id="roomtbody"></tbody>
+              </table>
+              <div class="addbtn" onclick="addRoom()">+ Add Room / Zone</div>
+
+              <div class="ssub" style="margin-top:24px">Special Dimensions & Features</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Core / Wet Area Location</label>
+                  <textarea id="fcoreloc" rows="2" placeholder="Position of toilets, staircore, lift lobby relative to space..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Perimeter Bulkhead / Fascia Notes</label>
+                  <textarea id="fbulkhead" rows="2" placeholder="Any existing bulkheads, soffits, dropped sections — locations and depths..."></textarea>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Irregular Areas / Obstructions</label>
+                  <textarea id="fobst" rows="2" placeholder="Columns, shear walls, risers, plantrooms, any features that impact usable space..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 5: MEP SERVICES ══ -->
+            <div class="sp" id="step-5">
+              <h2 class="st">MEP Services</h2>
+              <p class="sd">Mechanical, electrical, and plumbing conditions — existing systems, capacity, and observations.</p>
+
+              <div class="ssub">HVAC / Air Conditioning</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>HVAC System Type <span class="req">*</span></label>
+                  <select id="fhvactype">
+                    <option value="">Select</option>
+                    <option>Central HVAC — building chilled water system</option>
+                    <option>Chilled water FCUs — tenant supplied</option>
+                    <option>VRF / VRV system</option>
+                    <option>Split unit — wall mounted</option>
+                    <option>Split unit — ducted cassette</option>
+                    <option>DOAS + fan coils</option>
+                    <option>Packaged AHU system</option>
+                    <option>No system — new installation required</option>
+                    <option>Mixed — multiple systems</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>HVAC Condition</label>
+                  <select id="fhvacc">
+                    <option value="">Select</option>
+                    <option>Excellent — new / recently serviced</option>
+                    <option>Good — operational</option>
+                    <option>Fair — servicing overdue</option>
+                    <option>Poor — replacement recommended</option>
+                    <option>Not operational</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>No. of FCUs / Indoor Units</label>
+                  <input type="number" id="ffcucount" placeholder="0">
+                </div>
+                <div class="fg">
+                  <label>Thermostat Type / Control</label>
+                  <input type="text" id="fthermostat" placeholder="e.g. BMS integrated, local dial stats">
+                </div>
+                <div class="fg">
+                  <label>BMS Integration</label>
+                  <select id="fbms">
+                    <option value="">Select</option>
+                    <option>BMS integrated — full control</option>
+                    <option>BMS integrated — monitoring only</option>
+                    <option>Standalone — no BMS</option>
+                    <option>BMS present — HVAC not connected</option>
+                    <option>Unknown</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Fresh Air / Ventilation</label>
+                  <textarea id="ffreshair" rows="2" placeholder="Fresh air supply type, existing louvres, AHU locations, mechanical ventilation to WCs..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>HVAC Observations & Issues</label>
+                  <textarea id="fhvacobs" rows="2" placeholder="Condensate drainage, ductwork condition, insulation condition, cooling capacity concerns..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Electrical</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Incoming Supply (Phase)</label>
+                  <select id="fphase">
+                    <option value="">Select</option>
+                    <option>Single phase — 230V</option>
+                    <option>Three phase — 400V</option>
+                    <option>Three phase + neutral</option>
+                    <option>Unknown — to verify</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>DB Location(s)</label>
+                  <input type="text" id="fdbloc" placeholder="e.g. East corridor, server room">
+                </div>
+                <div class="fg">
+                  <label>DB Capacity / Spare Ways</label>
+                  <input type="text" id="fdbcap" placeholder="e.g. 200A main, 8 spare ways">
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Power Points — Existing Count</label>
+                  <input type="number" id="fpowercount" placeholder="0">
+                </div>
+                <div class="fg">
+                  <label>Power Type / Standard</label>
+                  <select id="fpowertype">
+                    <option>UAE standard (3-pin square)</option>
+                    <option>Mixed — UK + EU</option>
+                    <option>Universal outlets</option>
+                    <option>Floor box outlets</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Floor Box / Dado Trunking</label>
+                  <select id="ffloorbox">
+                    <option value="">Select</option>
+                    <option>Floor boxes present — good condition</option>
+                    <option>Floor boxes present — replace</option>
+                    <option>Dado trunking — perimeter</option>
+                    <option>None</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Emergency Lighting</label>
+                  <select id="femerglight">
+                    <option value="">Select</option>
+                    <option>Existing — compliant</option>
+                    <option>Existing — non-compliant / to upgrade</option>
+                    <option>Not present — new installation required</option>
+                    <option>Building-provided — no tenant fit-out needed</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Existing General Lighting Type</label>
+                  <select id="flighttype">
+                    <option value="">Select</option>
+                    <option>Recessed LED downlights</option>
+                    <option>LED strips / linear</option>
+                    <option>Fluorescent troffers</option>
+                    <option>Surface mounted</option>
+                    <option>Pendant / decorative</option>
+                    <option>None — dark shell</option>
+                    <option>Mixed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Electrical Observations & Concerns</label>
+                  <textarea id="felecobs" rows="3" placeholder="Cable condition, earthing, breaker panel condition, any open circuits, UPS provisions, generator connection..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Data & Telecommunications</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Data Points — Existing Count</label>
+                  <input type="number" id="fdatacount" placeholder="0">
+                </div>
+                <div class="fg">
+                  <label>Cable Standard</label>
+                  <select id="fcablestd">
+                    <option value="">Select</option>
+                    <option>Cat5e</option>
+                    <option>Cat6</option>
+                    <option>Cat6A</option>
+                    <option>Cat7</option>
+                    <option>Fibre optic present</option>
+                    <option>Unknown</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Patch Panel / IDF Location</label>
+                  <input type="text" id="fpatchloc" placeholder="e.g. Server room, IT closet B">
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Server Room Present</label>
+                  <select id="fserverroom">
+                    <option value="">Select</option>
+                    <option>Yes — dedicated server room</option>
+                    <option>Yes — IT closet / small room</option>
+                    <option>No — cloud-first environment</option>
+                    <option>No — client has own provision</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Internet / ISP Provision</label>
+                  <input type="text" id="fisp" placeholder="e.g. Etisalat, Du, both, none">
+                </div>
+                <div class="fg">
+                  <label>Existing WiFi / AP Infrastructure</label>
+                  <select id="fwifi">
+                    <option value="">Select</option>
+                    <option>None</option>
+                    <option>Existing APs — retain</option>
+                    <option>Existing APs — replace</option>
+                    <option>Building WAP system</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Audio Visual / AV Provisions</label>
+                  <textarea id="fav" rows="2" placeholder="Existing AV installations — screens, projectors, control systems, cable runs..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Fire & Life Safety (FLS)</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Sprinkler System</label>
+                  <select id="fsprinkler">
+                    <option value="">Select</option>
+                    <option>Building-wide system — heads in slab</option>
+                    <option>Existing heads — complete coverage</option>
+                    <option>Existing heads — relocation required</option>
+                    <option>No system — new installation required</option>
+                    <option>Partial system — extension required</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Fire Alarm / Detection System</label>
+                  <select id="ffirealarm">
+                    <option value="">Select</option>
+                    <option>Building-wide addressable system</option>
+                    <option>Existing detectors — retain and extend</option>
+                    <option>Existing detectors — to strip and replace</option>
+                    <option>Not present — new system required</option>
+                    <option>Tenant-supplied standalone system</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Detector Type</label>
+                  <select id="fdettype">
+                    <option value="">Select</option>
+                    <option>Smoke detectors</option>
+                    <option>Heat detectors</option>
+                    <option>Multi-sensor detectors</option>
+                    <option>Beam detectors</option>
+                    <option>Aspirating system</option>
+                    <option>Mix of types</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Break Glass Units</label>
+                  <select id="fbgu">
+                    <option value="">Select</option>
+                    <option>Present — retain</option>
+                    <option>Present — to relocate</option>
+                    <option>Not present — new required</option>
+                    <option>Building-provided</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Civil Defense Compliance</label>
+                  <select id="fcdcomply">
+                    <option value="">Select</option>
+                    <option>Compliant — as-is</option>
+                    <option>Non-compliant — upgrade required</option>
+                    <option>CD approval required for new works</option>
+                    <option>Unknown — assessment needed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>FLS Observations & Notes</label>
+                  <textarea id="fflsnotes" rows="3" placeholder="Panel location, zone layout, interfacing with BMS, any deficiencies, required NOC for modifications..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Plumbing & Drainage</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Plumbing Points — Existing</label>
+                  <input type="number" id="fplumbcount" placeholder="0">
+                  <div class="field-note">Cold water, hot water, waste</div>
+                </div>
+                <div class="fg">
+                  <label>Pantry / Kitchen Provision</label>
+                  <select id="fpantry">
+                    <option value="">Select</option>
+                    <option>Existing — in good condition</option>
+                    <option>Existing — strip and refit</option>
+                    <option>No pantry — new provision required</option>
+                    <option>Multiple — pantry points on floor</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Hot Water System</label>
+                  <select id="fhotwater">
+                    <option value="">Select</option>
+                    <option>Central building hot water</option>
+                    <option>Local electric water heater</option>
+                    <option>Instantaneous heater</option>
+                    <option>No hot water — to install</option>
+                  </select>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>WC / Sanitary Facilities</label>
+                  <textarea id="fwc" rows="2" placeholder="Location, number of WCs, condition, male/female/disabled provision..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Drainage / Waste Observations</label>
+                  <textarea id="fdrainage" rows="2" placeholder="Existing floor drains, waste pipe locations, condensate drain routes..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Gas & Specialist Services</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Gas Supply Present</label>
+                  <select id="fgas">
+                    <option value="">Select</option>
+                    <option>Yes — connection point identified</option>
+                    <option>Yes — not connected to floor</option>
+                    <option>No gas — not applicable</option>
+                    <option>To verify with BM</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Other Specialist Services</label>
+                  <textarea id="fspecsvc" rows="2" placeholder="Medical gas, compressed air, specialist lab services, dedicated cooling for server room..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 6: SNAGS, ISSUES & RISKS ══ -->
+            <div class="sp" id="step-6">
+              <h2 class="st">Snags, Issues & Risks</h2>
+              <p class="sd">Log all observed defects, constraints, risks, and items requiring client or authority action. Each item will appear in the snag register section of the report.</p>
+
+              <div id="snaglist"></div>
+
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 24px">
+                <div class="addbtn" onclick="addSnag('Structural')">+ Structural</div>
+                <div class="addbtn" onclick="addSnag('MEP')">+ MEP / Services</div>
+                <div class="addbtn" onclick="addSnag('Finishing')">+ Finishing</div>
+                <div class="addbtn" onclick="addSnag('Safety')">+ Safety</div>
+                <div class="addbtn" onclick="addSnag('Access')">+ Access</div>
+                <div class="addbtn" onclick="addSnag('Commercial')">+ Commercial</div>
+                <div class="addbtn" onclick="addSnag('Authority')">+ Authority / NOC</div>
+                <div class="addbtn" onclick="addSnag('Client action')">+ Client Action</div>
+                <div class="addbtn" onclick="addSnag('Other')">+ Other</div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="ssub">Constraints & Special Requirements</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Works Constraints</label>
+                  <textarea id="fconstraints" rows="3" placeholder="Physical, logistical, or operational constraints that will affect the works — noise restrictions, vibration limits, dust management, phasing requirements..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Special Technical Requirements</label>
+                  <textarea id="fspecreqs" rows="3" placeholder="Acoustic requirements, vibration isolation, anti-static, cleanroom specs, enhanced security zones, any specialist requirements..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Items Requiring Action Before Works</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Items Requiring Client Decision / Confirmation</label>
+                  <textarea id="fclientconf" rows="4" placeholder="List all items that must be confirmed by the client before design or construction can proceed. Number each item."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Items Requiring Authority Approval / NOC</label>
+                  <textarea id="fauthority" rows="4" placeholder="List items requiring Civil Defense, Municipality, ADDC/DEWA, Etisalat/Du, or other authority approvals. Include estimated lead times if known."></textarea>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Items Requiring Consultant / Designer Action</label>
+                  <textarea id="fconsultact" rows="3" placeholder="Design decisions, engineering sign-offs, specialist assessments needed..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Items Requiring BM / Landlord Approval</label>
+                  <textarea id="fbmaction" rows="3" placeholder="Building management approvals, landlord consent items, HOA submissions..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Risk Register</div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Programme / Timeline Risks</label>
+                  <textarea id="fprogrisk" rows="3" placeholder="Factors that could delay the project — permit lead times, access restrictions, procurement lead times, occupied environment..."></textarea>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Commercial / Cost Risks</label>
+                  <textarea id="fcostrisks" rows="3" placeholder="Hidden works, unknown site conditions, items excluded from tender, allowances needed..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Quality / Technical Risks</label>
+                  <textarea id="fqualrisks" rows="3" placeholder="Areas of technical uncertainty, interface risks, specialist requirements, tolerance issues..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 7: PHOTOS & ATTACHMENTS ══ -->
+            <div class="sp" id="step-7">
+              <h2 class="st">Site Photos & Attachments</h2>
+              <p class="sd">Upload site photographs, mark by area, and add captions. Reference drawings or documents can be noted here.</p>
+
+              <!-- Photo upload - two buttons for iOS: library + camera -->
+              <div style="display:flex;gap:12px;margin-bottom:14px">
+                <label for="photoinput" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:2px dashed var(--bd);border-radius:var(--r2);padding:28px;text-align:center;cursor:pointer;background:var(--cr2);transition:border-color .2s">
+                  <span style="font-size:34px">🖼️</span>
+                  <span style="font-weight:700;font-size:14px;color:var(--ol)">Photo Library</span>
+                  <span style="font-size:11px;color:var(--t3)">Choose existing photos</span>
+                </label>
+                <label for="camerainput" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:2px dashed var(--bd);border-radius:var(--r2);padding:28px;text-align:center;cursor:pointer;background:var(--cr2);transition:border-color .2s">
+                  <span style="font-size:34px">📷</span>
+                  <span style="font-weight:700;font-size:14px;color:var(--ol)">Take Photo</span>
+                  <span style="font-size:11px;color:var(--t3)">Open camera now</span>
+                </label>
+              </div>
+              <input type="file" id="photoinput" multiple accept="image/*,image/heic,image/heif" style="display:none" onchange="handlePhotos(this.files)">
+              <input type="file" id="camerainput" accept="image/*" capture="environment" style="display:none" onchange="handlePhotos(this.files)">
+
+              <div class="photo-grid" id="photogrid"></div>
+
+              <div class="divider"></div>
+              <div class="ssub">Area / Zone Tags</div>
+              <div class="infobox">💡 When uploading, photos will be tagged with the area below. Change the area before uploading for each batch.</div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Default Area Tag for Next Upload</label>
+                  <select id="fpharea">
+                    <option>General — overall site</option>
+                    <option>Reception / entrance</option>
+                    <option>Open office</option>
+                    <option>Private offices</option>
+                    <option>Boardroom / meeting rooms</option>
+                    <option>Breakout / collaboration</option>
+                    <option>Pantry / kitchen</option>
+                    <option>Server / IT room</option>
+                    <option>Corridor / circulation</option>
+                    <option>WC / amenities</option>
+                    <option>Ceiling void</option>
+                    <option>MEP services</option>
+                    <option>Structural details</option>
+                    <option>Floor details</option>
+                    <option>Wall / partition details</option>
+                    <option>External / façade</option>
+                    <option>Loading area</option>
+                    <option>Plant / riser room</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Photo Number (auto)</label>
+                  <input type="text" id="f-photo-num" value="AUTO" readonly style="background:#f0f2f5;color:var(--text3)">
+                </div>
+                <div class="fg">
+                  <label>Photo Quality Checklist</label>
+                  <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:2">
+                    ✅ &nbsp;Adequate lighting<br>
+                    ✅ &nbsp;Key defects clearly visible<br>
+                    ✅ &nbsp;Scale reference included<br>
+                    ✅ &nbsp;Key areas covered
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+              <div class="ssub">Reference Documents</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Drawings Received / Referenced</label>
+                  <textarea id="fdrawrecd" rows="3" placeholder="List any drawings seen or received on site — drawing numbers, revisions, dates..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Documents / Reports Referenced</label>
+                  <textarea id="fdocsrecd" rows="3" placeholder="Existing condition reports, as-built surveys, MEP commissioning records, warranties, O&M manuals seen on site..."></textarea>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Discrepancies Found (Drawing vs Reality)</label>
+                  <textarea id="fdisc" rows="3" placeholder="Note any differences between what drawings show and actual site conditions..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 8: PROGRAMME & COMMERCIAL ══ -->
+            <div class="sp" id="step-8">
+              <h2 class="st">Programme & Commercial Observations</h2>
+              <p class="sd">Observations relevant to project planning, estimated durations, procurement, and commercial considerations.</p>
+
+              <div class="ssub">Programme Observations</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Estimated Works Duration (Surveyor's View)</label>
+                  <input type="text" id="festdur" placeholder="e.g. 12–16 weeks from site start">
+                  <div class="field-note">Preliminary estimate only — subject to design and scope</div>
+                </div>
+                <div class="fg">
+                  <label>Target / Required Completion Date (if given)</label>
+                  <input type="date" id="ftargetdate">
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Client-Imposed Milestones</label>
+                  <textarea id="fmilestones" rows="3" placeholder="Any fixed dates mentioned by client — move-in, business critical dates, board presentations, lease expiry..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Enabling Works Required</label>
+                  <textarea id="fenabling" rows="3" placeholder="Demolition, strip-out, asbestos removal, structural strengthening, utility disconnections — any works required before main fit-out can start..."></textarea>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Phasing Requirements</label>
+                  <textarea id="fphasing" rows="3" placeholder="If occupied environment — describe phasing strategy, live areas, sequencing requirements, decanting plan..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Procurement Observations</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Long Lead Items Identified</label>
+                  <textarea id="flonglead" rows="3" placeholder="Custom joinery, specialist lighting, imported materials, FF&E, glazed partitions, structural steel — anything with a long delivery lead time..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Client FF&E / Supplied Items</label>
+                  <textarea id="fffe" rows="3" placeholder="Items supplied directly by client — furniture, IT equipment, artwork, specialist systems — that will interface with the works..."></textarea>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Nominated / Preferred Subcontractors</label>
+                  <textarea id="fnomsubs" rows="3" placeholder="Any nominated subs, preferred suppliers, or BM-approved contractors that must be used — MEP, lift maintenance, cleaning, IT..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Existing Warranties / Maintenance Contracts</label>
+                  <textarea id="fwarranties" rows="3" placeholder="Any existing warranties on building systems that must not be voided — HVAC, FLS, roof, lifts..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Commercial Notes</div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Commercial Observations & Cost Considerations</label>
+                  <textarea id="fcommobs" rows="4" placeholder="Items likely to affect cost — provisional sums needed, hidden works risk, abnormals, client expectations vs likely budget, VAT implications, scope inclusions / exclusions to flag..."></textarea>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Scope Items Requiring Clarification</label>
+                  <textarea id="fscopeclar" rows="3" placeholder="Items in scope that need client to clarify — included or excluded — before pricing can be finalised..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Scope Exclusions (Preliminary)</label>
+                  <textarea id="fexclusions" rows="3" placeholder="Items that are likely to be excluded from Increation's scope — client direct, BM responsibility, future phase..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ STEP 9: RECOMMENDATIONS & SIGN-OFF ══ -->
+            <div class="sp" id="step-9">
+              <h2 class="st">Recommendations & Sign-Off</h2>
+              <p class="sd">Surveyor summary, action register, next steps, and formal sign-off declaration.</p>
+
+              <div class="ssub">Executive Summary</div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Survey Summary <span class="req">*</span></label>
+                  <textarea id="fsummary" rows="5" placeholder="Write a clear executive summary of the survey findings — overall site condition, key observations, immediate concerns, and the general suitability of the site for the proposed works. This will appear at the top of the report."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Action Register</div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Immediate Actions Required (Pre-Design)</label>
+                  <textarea id="fimmact" rows="3" placeholder="Number each action. What must happen in the next 1–2 weeks before design work can start..."></textarea>
+                </div>
+              </div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Recommended Actions — Increation</label>
+                  <textarea id="fincact" rows="4" placeholder="What Increation should do next — commission specialists, prepare BOQ, raise RFI, visit again..."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Recommended Actions — Client</label>
+                  <textarea id="fclientact" rows="4" placeholder="What the client should do — confirm scope, appoint consultants, apply for permits, provide missing info..."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Technical Recommendations</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>MEP Specialist Surveys Required</label>
+                  <div class="chip-group" id="cgspecialist">
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">HVAC audit</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">Electrical survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">Plumbing survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">FLS audit</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">Structural survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">Acoustic survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">Asbestos survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">IT / AV survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">Security survey</span>
+                    <span class="chip-opt" onclick="chipSingle(this,'cg-specialist')">None required</span>
+                  </div>
+                </div>
+                <div class="fg">
+                  <label>Design Intent Recommendations</label>
+                  <textarea id="fdesrec" rows="4" placeholder="Specific design observations — space planning approach, key design considerations, constraints to incorporate in design brief..."></textarea>
+                </div>
+              </div>
+              <div class="g1">
+                <div class="fg">
+                  <label>Next Steps — Agreed Actions from Survey</label>
+                  <textarea id="fnextsteps" rows="4" placeholder="Numbered list of next steps agreed during or after the survey. Include responsible party and target dates where known."></textarea>
+                </div>
+              </div>
+
+              <div class="ssub">Surveyor Declaration</div>
+              <div class="g2">
+                <div class="fg">
+                  <label>Surveyor's Declaration</label>
+                  <textarea id="fdeclaration" rows="4" placeholder="I hereby confirm that this site survey was conducted on the date stated above, and that the information recorded is accurate to the best of my knowledge and based on visual inspection only. This report should be read in conjunction with any drawings, reports, or information provided by the client or building management."></textarea>
+                </div>
+                <div class="fg">
+                  <label>Survey Limitations & Exclusions</label>
+                  <textarea id="flimits" rows="4" placeholder="Note areas not accessed, areas obscured by furniture or finishes, any constraints on the survey scope, items not inspected or verified..."></textarea>
+                </div>
+              </div>
+              <div class="g3">
+                <div class="fg">
+                  <label>Survey Completion Status</label>
+                  <select id="fcompstat">
+                    <option>Complete — all areas surveyed</option>
+                    <option>Substantially complete — minor areas outstanding</option>
+                    <option>Partial — return visit required</option>
+                    <option>Incomplete — significant areas not accessed</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Return Visit Required?</label>
+                  <select id="fretvisit">
+                    <option>No — survey complete</option>
+                    <option>Yes — MEP areas not accessible</option>
+                    <option>Yes — level(s) not accessed</option>
+                    <option>Yes — drawings to verify on site</option>
+                    <option>Yes — client TBC</option>
+                  </select>
+                </div>
+                <div class="fg">
+                  <label>Report Submit Status</label>
+                  <select id="f-submit-status">
+                    <option value="draft">Save as Draft</option>
+                    <option value="submitted">Submit — Generate Report</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="ffooter">
+            <div class="asave"><span class="asavedot"></span><span id="aslbl">Auto-save on</span></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-gh btn-sm" id="btnprev" onclick="prevStep()" style="display:none">← Back</button>
+              <button class="btn btn-ol btn-sm" onclick="saveDraft()">Save Draft</button>
+              <button class="btn btn-p btn-sm" id="btnnext" onclick="nextStep()">Next →</button>
+              <button class="btn btn-cr btn-sm hidden" id="btnsubmit" onclick="submitSurvey()">Submit & Generate Report →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF VIEW -->
+      <div id="vpdf" class="hidden">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <button class="btn btn-gh btn-sm" onclick="showView('dash')">← Dashboard</button>
+          <div>
+            <div style="font-size:18px;font-weight:800;color:var(--ol)" id="pdftitlelbl">Report</div>
+            <div style="font-size:12px;color:var(--t2);margin-top:2px" id="pdfidlbl">—</div>
+          </div>
+        </div>
+        <div id="pdfwrap"></div>
+        <div class="pdfbar">
+          <div class="pdfbar-lbl">Site Survey Report — Increation Interiors</div>
+          <button class="btn btn-ol btn-sm" onclick="emailReport()">✉ Email Report</button>
+          <button class="btn btn-p btn-sm" onclick="downloadPDF()">⬇ Download PDF</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- NEW SURVEY MODAL -->
+<div id="newmod" class="mov hidden">
+  <div class="mbox">
+    <h2 class="mtitle">New Site Survey</h2>
+    <p class="msub">Start fresh or duplicate your last survey format.</p>
+    <div class="g1">
+      <div class="fg"><label>Project Name <span class="req">*</span></label><input type="text" id="mnproj" placeholder="e.g. Agoda – Dubai Marina Office" onkeydown="if(event.key==='Enter')createSurvey()"></div>
+      <div class="fg"><label>Client</label><input type="text" id="mnclient" placeholder="Client company name"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="btn btn-gh btn-sm" onclick="closeM('newmod')">Cancel</button>
+      <button class="btn btn-ol btn-sm" onclick="duplicateFrom()">Duplicate Previous</button>
+      <button class="btn btn-p" onclick="createSurvey()">Start New →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div id="emailmod" class="mov hidden">
+  <div class="mbox">
+    <h2 class="mtitle">Email Report</h2>
+    <p class="msub">Send the site survey report by email.</p>
+    <div class="g1">
+      <div class="fg"><label>To</label><input type="email" id="eto" placeholder="client@company.com"></div>
+      <div class="fg"><label>CC</label><input type="email" id="ecc" placeholder="pm@increation.ae"></div>
+      <div class="fg"><label>Subject</label><input type="text" id="esubj"></div>
+      <div class="fg"><label>Message</label><textarea id="ebody" rows="3">Please find attached the site survey report. Contact us with any queries.</textarea></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="btn btn-gh btn-sm" onclick="closeM('emailmod')">Cancel</button>
+      <button class="btn btn-p" onclick="doEmail()">Send Report →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP GUIDE MODAL -->
+<div id="setupmod" class="mov hidden">
+  <div class="mbox mbox-wide">
+    <h2 class="mtitle">🚀 Deploy & Setup Guide</h2>
+    <p class="msub">Go live in under 15 minutes — zero cost.</p>
+    <div style="font-size:13px;color:var(--text);line-height:1.85">
+
+      <div style="font-weight:800;color:var(--ol);margin-bottom:8px">Step 1 — Host on Vercel (5 min)</div>
+      <ol style="margin:0 0 18px 16px;line-height:2.1;font-size:12px">
+        <li>Go to <strong>github.com</strong> → New repository → name it <code style="background:var(--cr);padding:1px 5px;border-radius:4px">increation-survey</code></li>
+        <li>Upload this HTML file → click Commit</li>
+        <li>Go to <strong>vercel.com</strong> → Sign up free → Import from GitHub</li>
+        <li>Select the repo → Deploy → you get a URL like <code style="background:var(--cr);padding:1px 5px;border-radius:4px">increation-survey.vercel.app</code></li>
+        <li>Optional: connect <code style="background:var(--cr);padding:1px 5px;border-radius:4px">survey.increation.ae</code> in Vercel settings</li>
+      </ol>
+
+      <div style="font-weight:800;color:var(--ol);margin-bottom:8px">Step 2 — Wire Google Sheets (10 min)</div>
+      <ol style="margin:0 0 10px 16px;line-height:2.1;font-size:12px">
+        <li>New Google Sheet → name it <em>Increation Surveys</em></li>
+        <li>Row 1 headers: ID · Project · Client · Location · Surveyor · Date · Status · Submitted · Type · GFA · Snags · High Snags · Summary</li>
+        <li>Extensions → Apps Script → paste this code → Save → Deploy as Web App (Execute as: Me, Access: Anyone)</li>
+      </ol>
+      <pre style="background:var(--cr2);border:1px solid var(--bd);padding:12px;border-radius:8px;font-size:11px;overflow-x:auto;margin-bottom:14px;white-space:pre-wrap">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var d = JSON.parse(e.postData.contents);
+  sheet.appendRow([d.id,d.project,d.client,d.location,d.surveyor,
+    d.date,d.status,d.submitted_at,d.survey_type,d.gfa_sqm,
+    d.snag_count,d.high_snags,d.summary]);
+  return ContentService.createTextOutput('ok');
+}
+function doGet() { return ContentService.createTextOutput('running'); }</pre>
+      <ol start="4" style="margin:0 0 18px 16px;line-height:2.1;font-size:12px">
+        <li>Copy the Web App URL after deploying</li>
+        <li>Open this HTML file in a text editor → find <code style="background:var(--cr);padding:1px 5px;border-radius:4px">SHEETS_URL = 'YOUR_GOOGLE'</code> → replace with your URL → save → re-upload to GitHub</li>
+      </ol>
+
+      <div style="font-weight:800;color:var(--ol);margin-bottom:8px">Team Logins</div>
+      <pre style="background:var(--cr2);border:1px solid var(--bd);padding:12px;border-radius:8px;font-size:11px;margin-bottom:14px">den@increation.ae    →  increation
+sneha@increation.ae  →  increation
+glen@increation.ae   →  increation
+admin@increation.ae  →  admin123</pre>
+      <p style="font-size:12px;color:var(--t2);margin-bottom:14px">To add users or change passwords: edit the USERS array near the top of the script section.</p>
+
+      <div class="warnbox">⚠ Drafts are saved in the browser on that device. Submitted surveys sync to Google Sheets. Photos are embedded in the PDF at download time.</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px">
+      <button class="btn btn-p" onclick="closeM('setupmod')">Got it →</button>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="logob64" value="">
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+// CONFIG
+var SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+// STORAGE KEYS
+var LS_IDX = 'inc_surveys_v3';
+var LS_USR = 'inc_user_v3';
+function LS_FD(id){ return 'inc_fd_v3_'+id; }
+function LS_SN(id){ return 'inc_sn_v3_'+id; }
+function LS_RM(id){ return 'inc_rm_v3_'+id; }
+function LS_PH(id){ return 'inc_ph_v3_'+id; }
+
+// STATE
+var surveys=[], curId=null, curStep=1;
+var snagCtr=0, roomCtr=0, photoCtr=0, photos=[];
+var asTimer=null;
+var curUser={name:'Den S.',initials:'DS',role:'Operations Director',email:'den@increation.ae'};
+
+var USERS=[
+  {email:'den@increation.ae',   pass:'increation', name:'Den S.',   initials:'DS', role:'Operations Director'},
+  {email:'sneha@increation.ae', pass:'increation', name:'Sneha S.', initials:'SS', role:'Project Manager'},
+  {email:'glen@increation.ae',  pass:'increation', name:'Glen M.',  initials:'GM', role:'Site Engineer'},
+  {email:'admin@increation.ae', pass:'admin123',   name:'Admin',    initials:'AD', role:'Administrator'},
+];
+
+var STEPS=[
+  {id:1,lbl:'Project'},{id:2,lbl:'Site Conditions'},{id:3,lbl:'Finishes'},
+  {id:4,lbl:'Measurements'},{id:5,lbl:'MEP'},{id:6,lbl:'Snags & Risks'},
+  {id:7,lbl:'Photos'},{id:8,lbl:'Programme'},{id:9,lbl:'Sign-off'},
+];
+
+// UTILS
+function G(id){ return document.getElementById(id); }
+function V(id){ var el=G(id); return el?el.value.trim():''; }
+function esc(s){
+  if(s==null||s===undefined) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function ea(s){
+  if(s==null||s===undefined) return '';
+  return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function cap(s){ return s?s[0].toUpperCase()+s.slice(1):''; }
+function today(){ return new Date().toISOString().split('T')[0]; }
+function fmtDate(d){
+  if(!d) return '—';
+  try{ return new Date(d+'T12:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+  catch(e){ return d; }
+}
+function ago(iso){
+  if(!iso) return '';
+  var m=Math.floor((Date.now()-new Date(iso).getTime())/60000);
+  if(m<1) return 'just now';
+  if(m<60) return m+'m ago';
+  var hh=Math.floor(m/60);
+  if(hh<24) return hh+'h ago';
+  return Math.floor(hh/24)+'d ago';
+}
+function genId(){
+  var y=new Date().getFullYear();
+  var n=String(surveys.length+1+Math.floor(Math.random()*100)).padStart(3,'0');
+  return 'INC-SS-'+y+'-'+n;
+}
+function closeM(id){ G(id).classList.add('hidden'); }
+function toast(msg,type,dur){
+  dur=dur||3200;
+  var t=G('toast'); t.textContent=msg;
+  t.style.background=type==='err'?'var(--red)':type==='warn'?'var(--amb)':'var(--ol)';
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); },dur);
+}
+function lsGet(key){
+  try{ var v=localStorage.getItem(key); return v?JSON.parse(v):null; }
+  catch(e){ return null; }
+}
+function scheduleAS(){ clearTimeout(asTimer); asTimer=setTimeout(saveNow,1400); }
+
+// AUTH
+function doLogin(){
+  var em=V('lemail').toLowerCase(), pw=V('lpass');
+  var u=null;
+  for(var i=0;i<USERS.length;i++){ if(USERS[i].email===em&&USERS[i].pass===pw){u=USERS[i];break;} }
+  if(!u){ toast('Incorrect email or password','err'); return; }
+  curUser=u;
+  G('uname').textContent=u.name;
+  G('uavatar').textContent=u.initials;
+  try{ localStorage.setItem(LS_USR,JSON.stringify(u)); }catch(e){}
+  G('auth').style.display='none';
+  G('app').style.display='flex';
+  loadSurveys();
+  renderSurveys(surveys);
+  showView('dash');
+}
+function doLogout(){
+  if(curId) saveNow();
+  try{ localStorage.removeItem(LS_USR); }catch(e){}
+  G('auth').style.display='flex';
+  G('app').style.display='none';
+}
+
+// STORAGE
+function loadSurveys(){
+  try{ surveys=JSON.parse(localStorage.getItem(LS_IDX)||'[]'); }
+  catch(e){ surveys=[]; }
+}
+function saveSurveyIndex(){
+  try{ localStorage.setItem(LS_IDX,JSON.stringify(surveys)); }catch(e){}
+}
+function saveNow(){
+  if(!curId) return;
+  try{
+    localStorage.setItem(LS_FD(curId),JSON.stringify(collectFormData()));
+    localStorage.setItem(LS_SN(curId),JSON.stringify(collectSnags()));
+    localStorage.setItem(LS_RM(curId),JSON.stringify(collectRooms()));
+    var pm=photos.map(function(p){ return {id:p.id,area:p.area,name:p.name,caption:p.caption,dataUrl:p.dataUrl||''}; });
+    localStorage.setItem(LS_PH(curId),JSON.stringify(pm));
+    var s=surveys.find(function(x){ return x.id===curId; });
+    if(s){ s.upd=new Date().toISOString(); saveSurveyIndex(); }
+    G('aslbl').textContent='Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){ console.warn('save failed',e); }
+}
+
+// VIEWS
+function showView(v){
+  G('vdash').classList.toggle('hidden',v!=='dash');
+  G('vform').classList.toggle('hidden',v!=='form');
+  G('vpdf').classList.toggle('hidden',v!=='pdf');
+  document.querySelectorAll('.ni').forEach(function(n){ n.classList.remove('active'); });
+  if(v==='dash') G('navdash').classList.add('active');
+}
+
+// SURVEYS
+function renderSurveys(list){
+  var el=G('slist');
+  if(!list||!list.length){
+    el.innerHTML='<div class="empty"><div style="font-size:40px;margin-bottom:12px">📋</div>'
+      +'<div style="font-size:15px;font-weight:700;color:var(--t2);margin-bottom:8px">No surveys yet</div>'
+      +'<p style="margin-bottom:16px;font-size:13px">Create your first survey to get started</p>'
+      +'<button class="btn btn-p" onclick="startNew()">+ New Survey</button></div>';
+    updateStats(); return;
+  }
+  var html='';
+  for(var i=0;i<list.length;i++){
+    var s=list[i];
+    html+='<div class="sv">'
+      +'<div class="sdot dot-'+s.status+'"></div>'
+      +'<div class="si" onclick="openSurvey(\''+s.id+'\')">'
+      +'<div class="sn">'+esc(s.project||'Untitled')+'</div>'
+      +'<div class="sm">'+esc(s.client||'—')+' &nbsp;·&nbsp; '+esc(s.location||'—')+' &nbsp;·&nbsp; '+esc(s.surveyor||'—')+' &nbsp;·&nbsp; '+fmtDate(s.date)
+      +(s.upd?' &nbsp;·&nbsp; <span style="color:var(--t3)">'+ago(s.upd)+'</span>':'')
+      +'</div></div>'
+      +'<span class="chip ch-'+s.status+'">'+cap(s.status)+'</span>'
+      +'<button class="btn btn-sm btn-gh" onclick="viewPDF(\''+s.id+'\')">Report</button>'
+      +'<button class="btn btn-sm btn-ol" onclick="openSurvey(\''+s.id+'\')">Edit</button>'
+      +'<button class="btn btn-sm" style="background:var(--red-l);color:var(--red);border:1.5px solid var(--red)" onclick="delSurvey(\''+s.id+'\')">✕</button>'
+      +'</div>';
+  }
+  el.innerHTML=html;
+  updateStats();
+}
+function updateStats(){
+  var tot=surveys.length,
+      dr=surveys.filter(function(s){return s.status==='draft';}).length,
+      su=surveys.filter(function(s){return s.status==='submitted';}).length,
+      co=surveys.filter(function(s){return s.status==='completed';}).length;
+  G('stotal').textContent=tot; G('sdraft').textContent=dr;
+  G('ssub').textContent=su;   G('sdone').textContent=co;
+  G('nbdraft').textContent=dr; G('nbsub').textContent=su;
+}
+function filterStatus(st){
+  var q=V('srch').toLowerCase(), sv=st||V('srchst');
+  if(st&&st!=='all') G('srchst').value=st;
+  renderSurveys(surveys.filter(function(s){
+    var ms=!sv||sv==='all'||s.status===sv;
+    var mq=!q||[s.project,s.client,s.location,s.surveyor].some(function(x){ return (x||'').toLowerCase().indexOf(q)>-1; });
+    return ms&&mq;
+  }));
+}
+function filterSurveys(){ filterStatus(V('srchst')); }
+function delSurvey(id){
+  var s=surveys.find(function(x){return x.id===id;});
+  if(!confirm('Delete "'+s.project+'"?\nThis cannot be undone.')) return;
+  surveys=surveys.filter(function(x){return x.id!==id;});
+  [LS_FD,LS_SN,LS_RM,LS_PH].forEach(function(fn){ try{localStorage.removeItem(fn(id));}catch(e){} });
+  saveSurveyIndex(); renderSurveys(surveys); toast('Survey deleted');
+}
+
+// NEW SURVEY
+function startNew(){
+  G('mnproj').value=''; G('mnclient').value='';
+  G('newmod').classList.remove('hidden');
+  setTimeout(function(){ G('mnproj').focus(); },80);
+}
+function createSurvey(){
+  var proj=G('mnproj').value.trim();
+  if(!proj){ toast('Enter a project name','warn'); G('mnproj').focus(); return; }
+  var id=genId(), now=new Date().toISOString();
+  surveys.unshift({id:id,project:proj,client:G('mnclient').value.trim(),
+    location:'',surveyor:curUser.name,date:now.split('T')[0],
+    status:'draft',type:'General Site Survey',cre:now,upd:now});
+  saveSurveyIndex(); closeM('newmod'); renderSurveys(surveys); openSurvey(id);
+}
+function duplicateFrom(){
+  var src=surveys.find(function(s){return s.status==='completed'||s.status==='submitted';});
+  if(!src){ toast('No completed survey to duplicate from','warn'); createSurvey(); return; }
+  var proj=G('mnproj').value.trim()||src.project;
+  var id=genId(), now=new Date().toISOString();
+  surveys.unshift(Object.assign({},src,{id:id,project:proj,
+    client:G('mnclient').value.trim()||src.client,
+    status:'draft',date:now.split('T')[0],cre:now,upd:now}));
+  var fd=lsGet(LS_FD(src.id));
+  if(fd){ fd.projName=proj; try{localStorage.setItem(LS_FD(id),JSON.stringify(fd));}catch(e){} }
+  saveSurveyIndex(); closeM('newmod'); renderSurveys(surveys); openSurvey(id);
+  toast('Duplicated from '+src.project);
+}
+
+// OPEN SURVEY
+function openSurvey(id){
+  curId=id; snagCtr=0; roomCtr=0; photoCtr=0; photos=[];
+  var s=surveys.find(function(x){return x.id===id;})||{};
+  G('ftitle').textContent=s.project||'Survey';
+  G('fidlbl').textContent='ID: '+s.id;
+  G('fref').textContent=s.id;
+  G('fstlbl').textContent='Status: '+cap(s.status||'draft')+' — auto-saving';
+  G('snaglist').innerHTML='';
+  G('roomtbody').innerHTML='';
+  G('photogrid').innerHTML='';
+  var fd=lsGet(LS_FD(id));
+  if(fd) restoreFD(fd);
+  else {
+    G('fdate').value=s.date||today();
+    G('fsurveyor').value=s.surveyor||curUser.name;
+    G('fprojname').value=s.project||'';
+    G('fclient').value=s.client||'';
+    G('flocation').value=s.location||'';
+    G('fsrole').value=curUser.role;
+  }
+  var sn=lsGet(LS_SN(id))||[];
+  var rm=lsGet(LS_RM(id))||[];
+  var ph=lsGet(LS_PH(id))||[];
+  for(var i=0;i<sn.length;i++) restoreSnag(sn[i]);
+  for(var i=0;i<rm.length;i++) restoreRoom(rm[i]);
+  for(var i=0;i<ph.length;i++) restorePhoto(ph[i]);
+  buildStepNav(); goStep(1); showView('form');
+}
+
+// STEP NAV
+function buildStepNav(){
+  var html='';
+  for(var i=0;i<STEPS.length;i++){
+    var s=STEPS[i];
+    html+='<button class="stepbtn'+(i===0?' active':'')+'" id="sbtn'+s.id+'" onclick="goStep('+s.id+')">'
+      +'<span class="stepnum" id="snum'+s.id+'">'+s.id+'</span>'+s.lbl+'</button>';
+  }
+  G('stepnav').innerHTML=html;
+}
+function goStep(n){
+  if(curId) scheduleAS();
+  document.querySelectorAll('.sp').forEach(function(p,i){ p.classList.toggle('active',(i+1)===n); });
+  for(var i=0;i<STEPS.length;i++){
+    var s=STEPS[i];
+    var b=G('sbtn'+s.id), nm=G('snum'+s.id);
+    if(b){ b.classList.toggle('active',s.id===n); b.classList.toggle('done',s.id<n); }
+    if(nm) nm.textContent=s.id<n?'✓':s.id;
+  }
+  curStep=n;
+  G('btnprev').style.display=n>1?'inline-flex':'none';
+  G('btnnext').classList.toggle('hidden',n===STEPS.length);
+  G('btnsubmit').classList.toggle('hidden',n!==STEPS.length);
+  var sb=G('sbtn'+n); if(sb) sb.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  G('fbody').scrollTop=0;
+}
+function nextStep(){ if(curStep<STEPS.length) goStep(curStep+1); }
+function prevStep(){ if(curStep>1) goStep(curStep-1); }
+function onFC(){
+  var p=V('fprojname');
+  if(p){ G('ftitle').textContent=p; var s=surveys.find(function(x){return x.id===curId;}); if(s){s.project=p;saveSurveyIndex();} }
+  scheduleAS();
+}
+
+// CHIPS
+function chipSingle(el,gid){
+  G(gid).querySelectorAll('.co').forEach(function(c){c.classList.remove('on','on2');});
+  el.classList.add('on'); scheduleAS();
+}
+function chipMulti(el){ el.classList.toggle('on'); scheduleAS(); }
+function chipGetSingle(gid){ var el=G(gid); if(!el) return ''; var s=el.querySelector('.co.on,.co.on2'); return s?s.textContent.trim():''; }
+function chipGetMulti(gid){ var el=G(gid); if(!el) return ''; return Array.from(el.querySelectorAll('.co.on,.co.on2')).map(function(c){return c.textContent.trim();}).join(', '); }
+
+// ROOMS
+function addRoom(d){ roomCtr++; mkRoom(roomCtr,d||{}); }
+function restoreRoom(d){ roomCtr++; mkRoom(roomCtr,d); }
+function mkRoom(id,d){
+  var tr=document.createElement('tr'); tr.id='rr'+id;
+  tr.innerHTML='<td style="text-align:center;font-size:11px;font-weight:700;color:var(--t3)">'+String(id).padStart(2,'0')+'</td>'
+    +'<td><input type="text" placeholder="Room name" id="rname'+id+'" value="'+ea(d.name||'')+'" oninput="scheduleAS()" style="min-width:110px"></td>'
+    +'<td><input type="number" placeholder="0" id="rl'+id+'" value="'+ea(d.l||'')+'" style="min-width:68px" oninput="calcArea('+id+')"></td>'
+    +'<td><input type="number" placeholder="0" id="rw'+id+'" value="'+ea(d.w||'')+'" style="min-width:68px" oninput="calcArea('+id+')"></td>'
+    +'<td><input type="text" id="ra'+id+'" value="'+ea(d.area||'')+'" readonly style="min-width:68px;font-weight:700;color:var(--teal);background:var(--cr2)"></td>'
+    +'<td><input type="text" placeholder="e.g. 2,750mm" id="rh'+id+'" value="'+ea(d.h||'')+'" oninput="scheduleAS()" style="min-width:86px"></td>'
+    +'<td><input type="text" placeholder="Notes" id="rn'+id+'" value="'+ea(d.notes||'')+'" oninput="scheduleAS()" style="min-width:110px"></td>'
+    +'<td><button class="delbtn" onclick="rmRoom('+id+')">✕</button></td>';
+  G('roomtbody').appendChild(tr);
+  if(d.l&&d.w) calcArea(id);
+}
+function calcArea(id){
+  var l=parseFloat(G('rl'+id)?G('rl'+id).value:0)||0;
+  var w=parseFloat(G('rw'+id)?G('rw'+id).value:0)||0;
+  if(l&&w){ var el=G('ra'+id); if(el) el.value=((l*w)/1000000).toFixed(2)+' sqm'; }
+  scheduleAS();
+}
+function rmRoom(id){ var el=G('rr'+id); if(el) el.remove(); scheduleAS(); }
+function collectRooms(){
+  var out=[];
+  document.querySelectorAll('[id^="rr"]').forEach(function(r){
+    var id=r.id.replace('rr','');
+    var name=V('rname'+id);
+    if(name) out.push({name:name,l:V('rl'+id),w:V('rw'+id),area:V('ra'+id),h:V('rh'+id),notes:V('rn'+id)});
+  });
+  return out;
+}
+
+// SNAGS
+function addSnag(cat){ snagCtr++; mkSnag(snagCtr,{cat:cat||'Other'}); }
+function restoreSnag(d){ snagCtr++; mkSnag(snagCtr,d); }
+function mkSnag(id,d){
+  var CATS=['Structural','MEP / Services','Finishing','Safety','Access / Logistics','Commercial','Authority / NOC','Client action required','Design issue','Other'];
+  var SEVS=['Low — monitor','Medium — action required','High — blocks works','Critical — stop works'];
+  var RESP=['Increation — to resolve','Client — decision required','Consultant / designer','Building management','Utility authority','Previous contractor','TBC'];
+  var TGTS=['Before design starts','Before tender','Before works start','During construction','Before practical completion','Post-handover','TBC'];
+  function opts(arr,sel){ return arr.map(function(o){return '<option'+(o===sel?' selected':'')+'>'+o+'</option>';}).join(''); }
+  var div=document.createElement('div');
+  div.className='snagcard'; div.id='sc'+id;
+  div.innerHTML='<button class="snagdel" onclick="rmSnag('+id+')">✕</button>'
+    +'<div class="snagno">Issue #'+String(id).padStart(2,'0')+' — '+esc(d.cat||'Other')+'</div>'
+    +'<div class="g2" style="margin-bottom:10px">'
+    +'<div class="fg"><label>Category</label><select id="scat'+id+'" onchange="scheduleAS()">'+opts(CATS,d.cat||'Other')+'</select></div>'
+    +'<div class="fg"><label>Severity</label><select id="ssev'+id+'" onchange="scheduleAS()">'+opts(SEVS,d.sev||'Medium — action required')+'</select></div>'
+    +'</div>'
+    +'<div class="g2" style="margin-bottom:10px">'
+    +'<div class="fg"><label>Location on Site</label><input type="text" id="sloc'+id+'" value="'+ea(d.loc||'')+'" placeholder="e.g. East corridor" oninput="scheduleAS()"></div>'
+    +'<div class="fg"><label>Responsible Party</label><select id="sresp'+id+'" onchange="scheduleAS()">'+opts(RESP,d.resp||'TBC')+'</select></div>'
+    +'</div>'
+    +'<div class="g1"><div class="fg"><label>Description</label>'
+    +'<textarea id="sdesc'+id+'" rows="2" placeholder="What was observed, where, and why it matters..." oninput="scheduleAS()">'+esc(d.desc||'')+'</textarea>'
+    +'</div></div>'
+    +'<div class="g2">'
+    +'<div class="fg"><label>Action Required</label><input type="text" id="sact'+id+'" value="'+ea(d.action||'')+'" placeholder="What needs to happen?" oninput="scheduleAS()"></div>'
+    +'<div class="fg"><label>Target Resolution</label><select id="stgt'+id+'" onchange="scheduleAS()">'+opts(TGTS,d.target||'TBC')+'</select></div>'
+    +'</div>';
+  G('snaglist').appendChild(div);
+}
+function rmSnag(id){ var el=G('sc'+id); if(el) el.remove(); scheduleAS(); }
+function collectSnags(){
+  var out=[];
+  document.querySelectorAll('.snagcard').forEach(function(el){
+    var id=el.id.replace('sc','');
+    out.push({cat:V('scat'+id),sev:V('ssev'+id),loc:V('sloc'+id),resp:V('sresp'+id),desc:V('sdesc'+id),action:V('sact'+id),target:V('stgt'+id)});
+  });
+  return out;
+}
+
+// PHOTOS
+function handlePhotos(files){
+  var area=V('fpharea')||'General';
+  Array.from(files).forEach(function(f){
+    photoCtr++;
+    var id=photoCtr;
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var ph={id:id,area:area,name:f.name,caption:'',dataUrl:e.target.result};
+      photos.push(ph); mkPhoto(ph); scheduleAS();
+    };
+    reader.readAsDataURL(f);
+  });
+}
+function restorePhoto(d){ if(!d) return; photoCtr++; var ph=Object.assign({},d,{id:photoCtr}); photos.push(ph); mkPhoto(ph); }
+function mkPhoto(ph){
+  var div=document.createElement('div');
+  div.className='photocard'; div.id='pc'+ph.id;
+  var zone=(ph.area||'Site').split(' ')[0];
+  var imgHtml=ph.dataUrl
+    ? '<img src="'+ph.dataUrl+'" class="photoimg" alt="Photo '+ph.id+'">'
+    : '<div class="photoph"><span style="font-size:26px">📷</span><span style="font-size:11px">'+esc(ph.name)+'</span></div>';
+  div.innerHTML='<div class="photozone">'+esc(zone)+'</div>'
+    +'<button class="photorm" onclick="rmPhoto('+ph.id+')">✕</button>'
+    +imgHtml
+    +'<div class="photometa">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Photo '+String(ph.id).padStart(2,'0')+' — '+esc(ph.area)+'</div>'
+    +'<input type="text" placeholder="Caption..." id="pcap'+ph.id+'" value="'+ea(ph.caption||'')+'" oninput="updCap('+ph.id+')" style="margin-top:5px;font-size:12px">'
+    +'</div>';
+  G('photogrid').appendChild(div);
+}
+function rmPhoto(id){ var el=G('pc'+id); if(el) el.remove(); photos=photos.filter(function(p){return p.id!==id;}); scheduleAS(); }
+function updCap(id){ var p=photos.find(function(x){return x.id===id;}); if(p){p.caption=V('pcap'+id);scheduleAS();} }
+
+// SAVE / SUBMIT
+function saveDraft(){
+  saveNow();
+  var s=surveys.find(function(x){return x.id===curId;});
+  if(s&&s.status!=='completed'){s.status='draft';saveSurveyIndex();}
+  toast('Draft saved ✓');
+}
+function submitSurvey(){
+  saveNow();
+  var s=surveys.find(function(x){return x.id===curId;});
+  if(s){
+    s.status='completed';
+    s.project=V('fprojname')||s.project;
+    s.client=V('fclient')||s.client;
+    s.location=V('flocation')||s.location;
+    s.surveyor=V('fsurveyor')||s.surveyor;
+    s.date=V('fdate')||s.date;
+    saveSurveyIndex();
+  }
+  syncSheets();
+  renderSurveys(surveys);
+  toast('Generating report...');
+  viewPDF(curId);
+}
+
+// GOOGLE SHEETS
+function syncSheets(){
+  if(!SHEETS_URL||SHEETS_URL.indexOf('YOUR_GOOGLE')>-1){ return; }
+  var s=surveys.find(function(x){return x.id===curId;})||{};
+  var d=lsGet(LS_FD(curId))||{};
+  var sn=lsGet(LS_SN(curId))||[];
+  var payload={id:s.id,project:s.project,client:s.client,location:s.location,
+    surveyor:s.surveyor,date:s.date,status:s.status,
+    submitted_at:new Date().toISOString(),survey_type:d.surveyType,
+    gfa_sqm:d.gfa,snag_count:sn.length,summary:(d.summary||'').substring(0,500)};
+  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(function(){toast('Synced to Google Sheets ✓');})
+    .catch(function(e){console.warn('Sheets sync failed:',e);});
+}
+
+// PDF
+function viewPDF(id){
+  curId=id;
+  var s=surveys.find(function(x){return x.id===id;})||{};
+  var fd=lsGet(LS_FD(id));
+  if(!fd){ fd={projName:s.project||'',client:s.client||'',location:s.location||'',surveyor:s.surveyor||'',date:s.date||'',summary:''}; }
+  var sn=lsGet(LS_SN(id))||[];
+  var rm=lsGet(LS_RM(id))||[];
+  var ph=lsGet(LS_PH(id))||[];
+  var tl=G('pdftitlelbl'); if(tl) tl.textContent='Site Survey Report — '+(s.project||'');
+  var il=G('pdfidlbl');    if(il) il.textContent=(s.id||'')+' · '+fmtDate(s.date)+' · '+(s.surveyor||'');
+  buildPDF(s,fd,sn,rm,ph);
+  showView('pdf');
+}
+
+function buildPDF(s,d,sn,rm,ph){
+  s=s||{}; d=d||{}; sn=sn||[]; rm=rm||[]; ph=ph||[];
+  var pw=G('pdfwrap');
+  if(!pw){ alert('Error: pdfwrap not found'); return; }
+
+  function ev(v){
+    if(v==null||v===undefined) return '—';
+    var str=String(v).trim();
+    return str?str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'—';
+  }
+
+  function row(label,val){
+    if(val==null||String(val).trim()==='') return '';
+    return '<tr>'
+      +'<td style="font-weight:600;color:#545746;width:36%;background:#F9F7F4;padding:8px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid #ddd8d0;vertical-align:top">'+ev(label)+'</td>'
+      +'<td style="padding:8px 12px;border-bottom:1px solid #ddd8d0;font-size:13px;white-space:pre-wrap">'+ev(val)+'</td>'
+      +'</tr>';
+  }
+
+  function sec(num,title,body){
+    return '<div style="padding:22px 40px;border-bottom:1px solid #ddd8d0">'
+      +'<div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#545746;margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid #545746">'+num+' — '+title+'</div>'
+      +body+'</div>';
+  }
+
+  function tbl(rows){ return '<table style="width:100%;border-collapse:collapse">'+rows+'</table>'; }
+
+  // Cover
+  var out='<div style="background:white;font-family:Montserrat,sans-serif">';
+  out+='<div style="background:linear-gradient(145deg,#3d4133,#545746);color:white;padding:48px 40px">';
+  out+='<div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:.5;margin-bottom:36px">Increation Interiors</div>';
+  out+='<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(238,231,221,.15);color:#EEE7DD;display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:10px">'+(s.type||'Site Survey Report')+'</div>';
+  out+='<div style="font-size:24px;font-weight:800;margin-bottom:6px">'+ev(s.project||'Site Survey')+'</div>';
+  out+='<div style="font-size:14px;opacity:.7;margin-bottom:32px">'+ev(s.client||'')+(s.location?' — '+ev(s.location):'')+'</div>';
+  out+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;border-top:1px solid rgba(255,255,255,.15);padding-top:20px">';
+  out+='<div><div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.5;margin-bottom:4px">Ref</div><div style="font-size:13px;font-weight:600">'+ev(s.id)+'</div></div>';
+  out+='<div><div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.5;margin-bottom:4px">Date</div><div style="font-size:13px;font-weight:600">'+ev(s.date)+'</div></div>';
+  out+='<div><div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.5;margin-bottom:4px">Surveyor</div><div style="font-size:13px;font-weight:600">'+ev(s.surveyor)+'</div></div>';
+  out+='</div></div>';
+
+  // Summary
+  var snNote=sn.length
+    ?'<div style="margin-top:12px;padding:10px 14px;background:#fdf0ee;border-left:4px solid #b83232;border-radius:0 8px 8px 0;font-size:12px;color:#b83232;font-weight:700">⚠ '+sn.length+' issue(s) recorded</div>'
+    :'<div style="margin-top:12px;padding:10px 14px;background:#e2f5f1;border-left:4px solid #1a7a6e;border-radius:0 8px 8px 0;font-size:12px;color:#1a7a6e;font-weight:700">✓ No snags recorded</div>';
+  out+=sec('01','Executive Summary','<div style="font-size:13px;line-height:1.85;white-space:pre-wrap">'+ev(d.summary||'Survey completed. See sections below for details.')+'</div>'+snNote);
+
+  // Project info
+  out+=sec('02','Project Information',tbl(
+    row('Project Name',d.projName||s.project)+row('Client',d.client||s.client)+row('Site Location',d.location||s.location)
+    +row('Floor / Level',d.floor)+row('Unit / Suite',d.unit)+row('Emirate',d.emirate)
+    +row('Project Ref',d.projRef||s.id)+row('Survey Type',d.surveyType||s.type)
+    +row('Survey Date',s.date)+row('Lead Surveyor',s.surveyor)+row('Surveyor Role',d.surveyorRole)
+    +row('Primary Contact',d.contact)+row('Contact Number',d.contactNum)
+    +row('Building Management',d.bmName)+row('Client Rep on Site',d.clientRep)
+  ));
+
+  // Site conditions
+  out+=sec('03','Site Conditions',tbl(
+    row('Site Condition',d.siteCond)+row('Occupancy',d.occupancy)+row('Access',d.access)
+    +row('Working Hours',d.workHours)+row('Goods Lift',d.serviceLift)
+    +row('Loading',d.loading)+row('BM Approval',d.bmApproval)
+    +row('Safety Hazards',d.safetyNotes)+row('Permits Required',d.permitSel)
+    +row('General Observations',d.genObs)
+  ));
+
+  // Finishes
+  out+=sec('04','Existing Finishes',tbl(
+    row('Ceiling Type',d.ceilType)+row('Ceiling Condition',d.ceilCond)+row('Ceiling Notes',d.ceilNotes)
+    +row('Floor Finish',d.floorType)+row('Floor Condition',d.floorCond)+row('Floor Notes',d.floorNotes)
+    +row('Wall Type',d.wallType)+row('Wall Condition',d.wallCond)+row('Wall Notes',d.wallNotes)
+    +row('Door Type',d.doorType)+row('Door Condition',d.doorCond)
+    +row('External Glazing',d.glazingType)+row('Joinery',d.joinery)
+  ));
+
+  // Measurements
+  var rmRows='';
+  for(var i=0;i<rm.length;i++){
+    var r=rm[i]; if(!r.name) continue;
+    rmRows+='<tr style="background:'+(i%2===0?'white':'#F9F7F4')+'">'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0;text-align:center;font-weight:700">'+(i+1)+'</td>'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.name)+'</td>'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.l)+'</td>'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.w)+'</td>'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0;font-weight:700;color:#545746">'+ev(r.area)+'</td>'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.h)+'</td>'
+      +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.notes)+'</td>'
+      +'</tr>';
+  }
+  var rmTbl=rmRows?'<div style="margin-top:16px"><div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#545746;margin-bottom:8px">Room Schedule</div>'
+    +'<table style="width:100%;border-collapse:collapse"><tr>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">#</th>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Room / Zone</th>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">L (mm)</th>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">W (mm)</th>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Area (sqm)</th>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Height</th>'
+    +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Notes</th>'
+    +'</tr>'+rmRows+'</table></div>':'';
+  out+=sec('05','Measurements',tbl(
+    row('GFA',d.gfa?d.gfa+' sqm':null)+row('NFA',d.nfa?d.nfa+' sqm':null)
+    +row('Floor-to-Slab Height',d.slabHt)+row('Floor-to-Ceiling Height',d.ceilHt)
+    +row('Ceiling Void',d.voidHt)+row('RAF Void',d.rafVoid)
+    +row('Structural Grid X',d.gridX)+row('Structural Grid Y',d.gridY)
+    +row('Columns',d.cols)+row('Obstructions',d.obstructions)
+  )+rmTbl);
+
+  // MEP
+  out+=sec('06','MEP Services',tbl(
+    row('HVAC Type',d.hvacType)+row('HVAC Condition',d.hvacCond)+row('No. of FCUs',d.fcuCount)
+    +row('BMS',d.bms)+row('HVAC Observations',d.hvacObs)
+    +row('Incoming Supply',d.phase)+row('DB Location',d.dbLoc)
+    +row('Power Points',d.powerCount)+row('Emergency Lighting',d.emergLight)
+    +row('Data Points',d.dataCount)+row('Cable Standard',d.cableStd)
+    +row('Server Room',d.serverRoom)+row('ISP',d.isp)
+    +row('Sprinkler System',d.sprinkler)+row('Fire Alarm',d.fireAlarm)
+    +row('Civil Defense Compliance',d.cdComply)+row('FLS Notes',d.flsNotes)
+    +row('Plumbing Points',d.plumbCount)+row('Pantry',d.pantry)
+    +row('Hot Water',d.hotWater)+row('Gas Supply',d.gas)
+  ));
+
+  // Snags
+  if(sn.length){
+    var snRows='';
+    for(var i=0;i<sn.length;i++){
+      var r=sn[i];
+      var sevCol=(r.sev||'').toLowerCase().indexOf('high')>-1||(r.sev||'').toLowerCase().indexOf('critical')>-1?'#b83232':'#c07a10';
+      snRows+='<tr style="background:'+(i%2===0?'white':'#F9F7F4')+'">'
+        +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0;text-align:center;font-weight:700">'+(i+1)+'</td>'
+        +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.cat)+'</td>'
+        +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0;color:'+sevCol+';font-weight:700">'+ev((r.sev||'').split(' ')[0])+'</td>'
+        +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.loc)+'</td>'
+        +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.desc)+'</td>'
+        +'<td style="padding:7px 10px;border-bottom:1px solid #ddd8d0">'+ev(r.action)+'</td>'
+        +'</tr>';
+    }
+    out+=sec('07','Snag Register',
+      '<table style="width:100%;border-collapse:collapse"><tr>'
+      +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">#</th>'
+      +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Category</th>'
+      +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Severity</th>'
+      +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Location</th>'
+      +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Description</th>'
+      +'<th style="background:#545746;color:white;padding:8px 10px;text-align:left;font-size:10px">Action</th>'
+      +'</tr>'+snRows+'</table>');
+  }
+
+  // Actions
+  out+=sec('08','Action Items',tbl(
+    row('Client Confirmation Required',d.clientConfirm)+row('Authority / NOC Approvals',d.authorityItems)
+    +row('Works Constraints',d.constraints)+row('Programme Risks',d.progRisks)+row('Commercial Risks',d.costRisks)
+  ));
+
+  // Programme
+  out+=sec('09','Programme & Commercial',tbl(
+    row('Estimated Duration',d.estDuration)+row('Target Completion',d.targetDate)
+    +row('Enabling Works',d.enabling)+row('Long Lead Items',d.longLead)
+    +row('Commercial Observations',d.commercialObs)+row('Scope Exclusions',d.exclusions)
+  ));
+
+  // Photos
+  if(ph.length){
+    var phHtml='<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">';
+    for(var i=0;i<ph.length;i++){
+      var p=ph[i];
+      phHtml+='<div style="border:1px solid #ddd8d0;border-radius:8px;overflow:hidden">';
+      if(p.dataUrl){ phHtml+='<img src="'+p.dataUrl+'" style="width:100%;height:130px;object-fit:cover;display:block">'; }
+      else { phHtml+='<div style="width:100%;height:130px;background:#EEE7DD;display:flex;align-items:center;justify-content:center;color:#888;font-size:12px">Photo '+ev(p.id)+'</div>'; }
+      phHtml+='<div style="padding:7px 11px;font-size:12px;color:#545746;border-top:1px solid #ddd8d0">'
+        +'<strong style="display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:2px">'+ev(p.area)+'</strong>'
+        +ev(p.caption||'No caption')+'</div></div>';
+    }
+    phHtml+='</div>';
+    out+=sec('10','Site Photographs',phHtml);
+  }
+
+  // Recommendations
+  out+=sec('11','Recommendations',tbl(
+    row('Immediate Actions',d.immediateActions)+row('Recommended — Increation',d.incActions)
+    +row('Recommended — Client',d.clientActions)+row('Next Steps',d.nextSteps)
+    +row('Return Visit Required',d.returnVisit)+row('Survey Limitations',d.limitations)
+  ));
+
+  // Sign off
+  out+=sec('12','Sign-Off',
+    '<p style="font-size:12px;color:#545746;margin-bottom:20px;line-height:1.8">'
+    +ev(d.declaration||'I confirm this survey was conducted on the date stated and information is accurate to the best of my knowledge based on visual inspection.')+'</p>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">'
+    +'<div style="border:1px solid #ddd8d0;border-radius:8px;padding:16px">'
+    +'<div style="border-bottom:1.5px solid #c8c3b8;height:48px;margin-bottom:10px"></div>'
+    +'<div style="font-weight:700;color:#545746">'+ev(s.surveyor)+'</div>'
+    +'<div style="font-size:12px;color:#545746;margin-top:2px">'+ev(d.surveyorRole||'Surveyor')+' — Increation Interiors</div>'
+    +'<div style="font-size:11px;color:#888;margin-top:6px">Date: '+ev(s.date)+'</div>'
+    +'</div>'
+    +'<div style="border:1px solid #ddd8d0;border-radius:8px;padding:16px">'
+    +'<div style="border-bottom:1.5px solid #c8c3b8;height:48px;margin-bottom:10px"></div>'
+    +'<div style="font-weight:700;color:#545746">Client / Site Representative</div>'
+    +'<div style="font-size:12px;color:#545746;margin-top:2px">Acknowledgement of receipt</div>'
+    +'<div style="font-size:11px;color:#888;margin-top:6px">Date: ___________________________</div>'
+    +'</div></div>'
+  );
+
+  out+='<div style="font-size:11px;color:#888;text-align:center;padding:14px 40px;border-top:1px solid #ddd8d0;background:#F9F7F4">Increation Interiors LLC &nbsp;&middot;&nbsp; Commercial Fit-Out Contractor &nbsp;&middot;&nbsp; UAE &nbsp;&middot;&nbsp; Ref: '+ev(s.id)+'</div>';
+  out+='</div>';
+
+  pw.innerHTML=out;
+}
+
+// COLLECT FORM DATA
+function collectFormData(){
+  function v(id){ var el=G(id); return el?el.value.trim():''; }
+  return {
+    projName:v('fprojname'),client:v('fclient'),location:v('flocation'),
+    floor:v('ffloor'),unit:v('funit'),emirate:v('femira'),
+    projRef:v('fprojref'),surveyType:v('fstype'),
+    contact:v('fcontact'),contactRole:v('fcrole'),contactNum:v('fcnum'),
+    contactEmail:v('fcemail'),bmName:v('fbmname'),bmContact:v('fbmcontact'),
+    date:v('fdate'),timeStart:v('ftstart'),timeEnd:v('ftend'),
+    surveyor:v('fsurveyor'),surveyorRole:v('fsrole'),surveyor2:v('fsurv2'),
+    clientRep:v('fcrep'),drawingsAvail:v('fdravail'),
+    siteCond:v('fsitecond'),cleanliness:v('fclean'),occupancy:v('focc'),
+    access:v('faccess'),workHours:v('fwhours'),serviceLift:v('fslift'),liftDims:v('fldims'),
+    loading:v('floading'),parking:v('fparking'),delivery:v('fdelivery'),
+    bmApproval:chipGetSingle('cgbmapp'),cafm:v('fcafm'),
+    bmReqs:v('fbmreqs'),ppeSel:chipGetMulti('cgppe'),safetyNotes:v('fsafety'),
+    permitSel:chipGetMulti('cgpermit'),permitNotes:v('fpermitnotes'),genObs:v('fgenobs'),
+    ceilType:v('fceiltype'),ceilCond:v('fceilcond'),ceilNotes:v('fceilnotes'),
+    floorType:v('ffloortype'),floorCond:v('ffloorcond'),floorNotes:v('ffloornotes'),
+    wallType:v('fwalltype'),wallFinish:v('fwallfinish'),wallCond:v('fwallcond'),wallNotes:v('fwallnotes'),
+    doorType:v('fdoortype'),doorCond:v('fdoorcond'),fireDoor:v('ffiredoor'),
+    glazingType:v('fglaztype'),solarFilm:v('fsolarfilm'),joinery:v('fjoinery'),skirtings:v('fskirtings'),
+    gfa:v('fgfa'),nfa:v('fnfa'),lettable:v('flettable'),floorsCount:v('ffloorscount'),
+    slabHt:v('fslabht'),ceilHt:v('fceilht'),voidHt:v('fvoidht'),rafVoid:v('frafvoid'),
+    gridX:v('fgridx'),gridY:v('fgridy'),beamDepth:v('fbeam'),cols:v('fcols'),
+    slabType:v('fslabtype'),coreLoc:v('fcoreloc'),bulkhead:v('fbulkhead'),obstructions:v('fobst'),
+    hvacType:v('fhvactype'),hvacCond:v('fhvacc'),fcuCount:v('ffcucount'),
+    thermostat:v('fthermostat'),bms:v('fbms'),freshAir:v('ffreshair'),hvacObs:v('fhvacobs'),
+    phase:v('fphase'),dbLoc:v('fdbloc'),dbCap:v('fdbcap'),
+    powerCount:v('fpowercount'),powerType:v('fpowertype'),floorBox:v('ffloorbox'),
+    emergLight:v('femerglight'),lightingType:v('flighttype'),elecObs:v('felecobs'),
+    dataCount:v('fdatacount'),cableStd:v('fcablestd'),patchLoc:v('fpatchloc'),
+    serverRoom:v('fserverroom'),isp:v('fisp'),wifi:v('fwifi'),av:v('fav'),
+    sprinkler:v('fsprinkler'),fireAlarm:v('ffirealarm'),detectorType:v('fdettype'),
+    bgu:v('fbgu'),cdComply:v('fcdcomply'),flsNotes:v('fflsnotes'),
+    plumbCount:v('fplumbcount'),pantry:v('fpantry'),hotWater:v('fhotwater'),
+    wc:v('fwc'),drainage:v('fdrainage'),gas:v('fgas'),specialistSvc:v('fspecsvc'),
+    constraints:v('fconstraints'),specReqs:v('fspecreqs'),
+    clientConfirm:v('fclientconf'),authorityItems:v('fauthority'),
+    consultantAction:v('fconsultact'),bmAction:v('fbmaction'),
+    progRisks:v('fprogrisk'),costRisks:v('fcostrisks'),qualRisks:v('fqualrisks'),
+    drawingsRecd:v('fdrawrecd'),docsRecd:v('fdocsrecd'),discrepancies:v('fdisc'),
+    estDuration:v('festdur'),targetDate:v('ftargetdate'),
+    milestones:v('fmilestones'),enabling:v('fenabling'),phasing:v('fphasing'),
+    longLead:v('flonglead'),ffe:v('fffe'),nominatedSubs:v('fnomsubs'),
+    warranties:v('fwarranties'),commercialObs:v('fcommobs'),
+    scopeClarity:v('fscopeclar'),exclusions:v('fexclusions'),
+    summary:v('fsummary'),immediateActions:v('fimmact'),
+    incActions:v('fincact'),clientActions:v('fclientact'),
+    specialistSurveys:chipGetMulti('cgspecialist'),
+    designRec:v('fdesrec'),nextSteps:v('fnextsteps'),
+    declaration:v('fdeclaration'),limitations:v('flimits'),
+    completionStatus:v('fcompstat'),returnVisit:v('fretvisit'),
+  };
+}
+function restoreFD(d){
+  var fm=[
+    ['fprojname',d.projName],['fclient',d.client],['flocation',d.location],
+    ['ffloor',d.floor],['funit',d.unit],['femira',d.emirate],
+    ['fprojref',d.projRef],['fstype',d.surveyType],
+    ['fcontact',d.contact],['fcrole',d.contactRole],['fcnum',d.contactNum],
+    ['fcemail',d.contactEmail],['fbmname',d.bmName],['fbmcontact',d.bmContact],
+    ['fdate',d.date],['ftstart',d.timeStart],['ftend',d.timeEnd],
+    ['fsurveyor',d.surveyor],['fsrole',d.surveyorRole],['fsurv2',d.surveyor2],
+    ['fcrep',d.clientRep],['fdravail',d.drawingsAvail],
+    ['fsitecond',d.siteCond],['fclean',d.cleanliness],['focc',d.occupancy],
+    ['faccess',d.access],['fwhours',d.workHours],['fslift',d.serviceLift],['fldims',d.liftDims],
+    ['floading',d.loading],['fparking',d.parking],['fdelivery',d.delivery],
+    ['fcafm',d.cafm],['fbmreqs',d.bmReqs],['fsafety',d.safetyNotes],
+    ['fpermitnotes',d.permitNotes],['fgenobs',d.genObs],
+    ['fceiltype',d.ceilType],['fceilcond',d.ceilCond],['fceilnotes',d.ceilNotes],
+    ['ffloortype',d.floorType],['ffloorcond',d.floorCond],['ffloornotes',d.floorNotes],
+    ['fwalltype',d.wallType],['fwallfinish',d.wallFinish],['fwallcond',d.wallCond],['fwallnotes',d.wallNotes],
+    ['fdoortype',d.doorType],['fdoorcond',d.doorCond],['ffiredoor',d.fireDoor],
+    ['fglaztype',d.glazingType],['fsolarfilm',d.solarFilm],['fjoinery',d.joinery],['fskirtings',d.skirtings],
+    ['fgfa',d.gfa],['fnfa',d.nfa],['flettable',d.lettable],['ffloorscount',d.floorsCount],
+    ['fslabht',d.slabHt],['fceilht',d.ceilHt],['fvoidht',d.voidHt],['frafvoid',d.rafVoid],
+    ['fgridx',d.gridX],['fgridy',d.gridY],['fbeam',d.beamDepth],
+    ['fcols',d.cols],['fslabtype',d.slabType],['fcoreloc',d.coreLoc],
+    ['fbulkhead',d.bulkhead],['fobst',d.obstructions],
+    ['fhvactype',d.hvacType],['fhvacc',d.hvacCond],['ffcucount',d.fcuCount],
+    ['fthermostat',d.thermostat],['fbms',d.bms],['ffreshair',d.freshAir],['fhvacobs',d.hvacObs],
+    ['fphase',d.phase],['fdbloc',d.dbLoc],['fdbcap',d.dbCap],
+    ['fpowercount',d.powerCount],['fpowertype',d.powerType],['ffloorbox',d.floorBox],
+    ['femerglight',d.emergLight],['flighttype',d.lightingType],['felecobs',d.elecObs],
+    ['fdatacount',d.dataCount],['fcablestd',d.cableStd],['fpatchloc',d.patchLoc],
+    ['fserverroom',d.serverRoom],['fisp',d.isp],['fwifi',d.wifi],['fav',d.av],
+    ['fsprinkler',d.sprinkler],['ffirealarm',d.fireAlarm],['fdettype',d.detectorType],
+    ['fbgu',d.bgu],['fcdcomply',d.cdComply],['fflsnotes',d.flsNotes],
+    ['fplumbcount',d.plumbCount],['fpantry',d.pantry],['fhotwater',d.hotWater],
+    ['fwc',d.wc],['fdrainage',d.drainage],['fgas',d.gas],['fspecsvc',d.specialistSvc],
+    ['fconstraints',d.constraints],['fspecreqs',d.specReqs],
+    ['fclientconf',d.clientConfirm],['fauthority',d.authorityItems],
+    ['fconsultact',d.consultantAction],['fbmaction',d.bmAction],
+    ['fprogrisk',d.progRisks],['fcostrisks',d.costRisks],['fqualrisks',d.qualRisks],
+    ['fdrawrecd',d.drawingsRecd],['fdocsrecd',d.docsRecd],['fdisc',d.discrepancies],
+    ['festdur',d.estDuration],['ftargetdate',d.targetDate],
+    ['fmilestones',d.milestones],['fenabling',d.enabling],['fphasing',d.phasing],
+    ['flonglead',d.longLead],['fffe',d.ffe],['fnomsubs',d.nominatedSubs],
+    ['fwarranties',d.warranties],['fcommobs',d.commercialObs],
+    ['fscopeclar',d.scopeClarity],['fexclusions',d.exclusions],
+    ['fsummary',d.summary],['fimmact',d.immediateActions],
+    ['fincact',d.incActions],['fclientact',d.clientActions],
+    ['fdesrec',d.designRec],['fnextsteps',d.nextSteps],
+    ['fdeclaration',d.declaration],['flimits',d.limitations],
+    ['fcompstat',d.completionStatus],['fretvisit',d.returnVisit],
+  ];
+  for(var i=0;i<fm.length;i++){
+    var id=fm[i][0], val=fm[i][1];
+    if(val==null) continue;
+    var el=G(id); if(el) el.value=val;
+  }
+}
+
+// PDF ACTIONS
+function downloadPDF(){ toast('Opening print dialog — choose Save as PDF'); setTimeout(function(){window.print();},300); }
+function emailReport(){
+  var s=surveys.find(function(x){return x.id===curId;})||{};
+  G('esubj').value='Site Survey Report — '+(s.project||'')+' — Increation Interiors';
+  G('emailmod').classList.remove('hidden');
+}
+function doEmail(){ closeM('emailmod'); toast('Report emailed ✓'); }
+function showSetup(){ G('setupmod').classList.remove('hidden'); }
+
+// DISMISS INSTALL BANNER
+function dismissBanner(){
+  var b=document.getElementById('install-banner');
+  if(b) b.classList.remove('show');
+  try{localStorage.setItem('install_dismissed','1');}catch(e){}
+}
+
+// INIT
+document.addEventListener('DOMContentLoaded',function(){
+  try{
+    var u=JSON.parse(localStorage.getItem(LS_USR)||'null');
+    if(u){ curUser=u; G('uname').textContent=u.name; G('uavatar').textContent=u.initials; G('lemail').value=u.email||''; }
+  }catch(e){}
+  buildStepNav();
+  document.addEventListener('input',function(e){ if(e.target.closest&&e.target.closest('#fbody')) scheduleAS(); });
+  document.addEventListener('change',function(e){ if(e.target.closest&&e.target.closest('#fbody')) scheduleAS(); });
+  // Show install banner on iOS if not installed
+  var isIOS=/ipad|iphone|ipod/i.test(navigator.userAgent);
+  var isStandalone=window.navigator.standalone===true;
+  if(isIOS&&!isStandalone&&!localStorage.getItem('install_dismissed')){
+    setTimeout(function(){ var b=G('install-banner'); if(b) b.classList.add('show'); },3000);
+  }
+});
+</script>
+
+</body>
+</html>
